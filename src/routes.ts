@@ -1,0 +1,14 @@
+//CORE_REFERENCE_IMPORTS
+//CORE_REFERENCE_IMPORT-vendors-SSD_SERVICE_ID_sd_Mm1iZGTDzKiEJgjO
+import { vendors as SSD_SERVICE_ID_sd_Mm1iZGTDzKiEJgjO } from './sd-services/vendors';
+
+
+
+export const UserRoutes = [
+
+    //CORE_REFERENCE_PUSH_TO_ROUTE_ARRAY
+//CORE_REFERENCE_PUSH_TO_ROUTE_ARRAY-vendors-SSD_SERVICE_ID_sd_Mm1iZGTDzKiEJgjO
+SSD_SERVICE_ID_sd_Mm1iZGTDzKiEJgjO,
+
+];
+

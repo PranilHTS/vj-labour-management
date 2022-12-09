@@ -1,0 +1,96 @@
+{
+    "/getFromCollection": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/updateDocument": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/getVendors": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/login": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/createAdminUser": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/addRole": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    }
+}
