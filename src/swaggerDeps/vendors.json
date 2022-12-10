@@ -6,9 +6,7 @@
             "consumes": [
                 "application/json"
             ],
-            "produces": [
-                "application/json"
-            ],
+            "produces": [],
             "parameters": [],
             "responses": {},
             "tags": [
@@ -66,9 +64,7 @@
             "consumes": [
                 "application/json"
             ],
-            "produces": [
-                "application/json"
-            ],
+            "produces": [],
             "parameters": [],
             "responses": {},
             "tags": [
@@ -83,9 +79,7 @@
             "consumes": [
                 "application/json"
             ],
-            "produces": [
-                "application/json"
-            ],
+            "produces": [],
             "parameters": [],
             "responses": {},
             "tags": [

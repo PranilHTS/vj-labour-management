@@ -494,8 +494,6 @@ export class vendors {
 
   async sd_hFFE5x4kHRMAUsBq(bh) {
     try {
-      bh.web.res.set({ 'Content-type': 'application/json' });
-
       bh.web.res
         .status(500)
         .send({ error: bh.error.toString(), success: false });
@@ -551,8 +549,6 @@ export class vendors {
 
   async sd_zbgHmSswhLzrXdSz(bh) {
     try {
-      bh.web.res.set({ 'Content-type': 'application/json' });
-
       bh.web.res
         .status(401)
         .send({ error: 'Invalid email or password', success: false });
@@ -608,8 +604,6 @@ export class vendors {
 
   async sd_2D1QeJgwLmTWB1Gg(bh) {
     try {
-      bh.web.res.set({ 'Content-type': 'application/json' });
-
       bh.web.res.status(200).send({ success: true });
 
       return bh;
@@ -620,8 +614,6 @@ export class vendors {
 
   async sd_OzZT4VOg1ziIR1A7(bh) {
     try {
-      bh.web.res.set({ 'Content-type': 'application/json' });
-
       bh.web.res
         .status(401)
         .send({ error: 'Invalid email or password', success: false });
