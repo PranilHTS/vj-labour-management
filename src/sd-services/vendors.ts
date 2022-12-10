@@ -550,7 +550,7 @@ export class vendors {
   async sd_zbgHmSswhLzrXdSz(bh) {
     try {
       bh.web.res
-        .status(401)
+        .status(200)
         .send({ error: 'Invalid email or password', success: false });
 
       return bh;
@@ -615,7 +615,7 @@ export class vendors {
   async sd_OzZT4VOg1ziIR1A7(bh) {
     try {
       bh.web.res
-        .status(401)
+        .status(200)
         .send({ error: 'Invalid email or password', success: false });
 
       return bh;
@@ -699,7 +699,7 @@ export class vendors {
   async sd_XiQZIrzeGFFvlu3w(bh) {
     try {
       bh.web.res
-        .status(401)
+        .status(200)
         .send({
           success: false,
           message: 'Body does not have the right information',
@@ -781,7 +781,7 @@ export class vendors {
   async sd_vXAvws09sbaB07zQ(bh) {
     try {
       bh.web.res
-        .status(401)
+        .status(200)
         .send({
           success: false,
           message: 'Body does not have the right information',
