@@ -412,7 +412,7 @@ export class vendors {
         method: 'post',
         headers: { 'Content-Type': 'text/xml' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.body,
         paytoqs: false,
@@ -493,10 +493,11 @@ export class vendors {
 
   async sd_RPHyvWHJNvx3f5S3(bh) {
     try {
-      bh.local.userDoc = await this.firestoreDb
+      bh.local.userDocs = await this.firestoreDb
         .collection('AdminUsers')
         .where('email', '==', bh.input.body.email)
         .get();
+      console.log(bh.local.userDocs.empty);
       bh = await this.sd_OA0IRO0Hmczcz0ts(bh);
       //appendnew_next_sd_RPHyvWHJNvx3f5S3
       return bh;
@@ -509,7 +510,7 @@ export class vendors {
     try {
       if (
         this.sdService.operators['true'](
-          bh.local.userDoc,
+          bh.local.userDocs.empty,
           undefined,
           undefined,
           undefined
@@ -518,7 +519,7 @@ export class vendors {
         bh = await this.sd_zbgHmSswhLzrXdSz(bh);
       } else if (
         this.sdService.operators['false'](
-          bh.local.userDoc,
+          bh.local.userDocs.empty,
           undefined,
           undefined,
           undefined
@@ -549,8 +550,11 @@ export class vendors {
 
   async sd_uEwQIpdBBbfgFvOT(bh) {
     try {
-      bh.local.userDocData = bh.local.userDoc.data();
-      bh.local.userDocData.id = bh.local.userDoc.id;
+      bh.local.userDocs.forEach((userDoc) => {
+        bh.local.userDocData = userDoc.data();
+        bh.local.userDocData.id = userDoc.id;
+      });
+
       bh = await this.sd_b9DXQtrwuVCKubuQ(bh);
       //appendnew_next_sd_uEwQIpdBBbfgFvOT
       return bh;
@@ -564,7 +568,7 @@ export class vendors {
       if (
         this.sdService.operators['eq'](
           bh.input.body.password,
-          bh.local.userData.password,
+          bh.local.userDocData.password,
           undefined,
           undefined
         )
@@ -573,7 +577,7 @@ export class vendors {
       } else if (
         this.sdService.operators['neq'](
           bh.input.body.password,
-          bh.local.userData.password,
+          bh.local.userDocData.password,
           undefined,
           undefined
         )
