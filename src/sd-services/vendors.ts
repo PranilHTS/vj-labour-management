@@ -483,11 +483,26 @@ export class vendors {
 
   async sd_yviq2OPBSHrnXv94(bh) {
     try {
-      console.log(bh.errorSource);
+      console.log(bh.error);
+      bh = await this.sd_hFFE5x4kHRMAUsBq(bh);
       //appendnew_next_sd_yviq2OPBSHrnXv94
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_yviq2OPBSHrnXv94');
+    }
+  }
+
+  async sd_hFFE5x4kHRMAUsBq(bh) {
+    try {
+      bh.web.res.set({ 'Content-type': 'application/json' });
+
+      bh.web.res
+        .status(500)
+        .send({ error: bh.error.toString(), success: false });
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_hFFE5x4kHRMAUsBq');
     }
   }
 
@@ -808,7 +823,7 @@ export class vendors {
     }
   }
   async sd_TKGC1KAqz4dHO9pO(bh) {
-    const catchConnectedNodes = ['sd_yviq2OPBSHrnXv94'];
+    const catchConnectedNodes = ['sd_yviq2OPBSHrnXv94', 'sd_hFFE5x4kHRMAUsBq'];
     if (catchConnectedNodes.includes(bh.errorSource)) {
       return false;
     }
