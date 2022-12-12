@@ -16,6 +16,7 @@ import log from '../utils/Logger'; //_splitter_
 import { initializeApp, cert } from 'firebase-admin/app'; //_splitter_
 import { readFile } from 'fs'; //_splitter_
 import { getFirestore } from 'firebase-admin/firestore'; //_splitter_
+import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
 export class vendors {
   public firestoreDb: any;
@@ -161,7 +162,7 @@ export class vendors {
     );
 
     this.app['post'](
-      `${this.serviceBasePath}/getVendors`,
+      `${this.serviceBasePath}/getVendorTransactions`,
       cookieParser(),
       this.sdService.getMiddlesWaresBySequenceId(
         null,
@@ -283,6 +284,37 @@ export class vendors {
         this.generatedMiddlewares
       )
     );
+
+    this.app['post'](
+      `${this.serviceBasePath}/addDocument`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_19l6U6K5dwVYldCX(bh);
+          //appendnew_next_sd_9a7deD2kX8fgSOAq
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_9a7deD2kX8fgSOAq');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
     //appendnew_flow_vendors_HttpIn
   }
   //   service flows_vendors
@@ -381,14 +413,15 @@ export class vendors {
 
   async sd_vqVOSlVzfApKyD1U(bh) {
     try {
-      bh.local.body = `
-    <?xml version="1.0" encoding="utf-8"?>
+      let query = bh.input.body;
+      console.log(bh.input.body);
+      bh.local.body = `<?xml version="1.0" encoding="utf-8"?>
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     <soap:Body>
     <GetTransactionsLog xmlns="http://tempuri.org/">
-      <FromDate>2022-12-01</FromDate>
-      <ToDate>2022-12-05</ToDate>
-      <SerialNumber>CN4C222260084</SerialNumber>
+      <FromDate>${query.fromDate}</FromDate>
+      <ToDate>${query.toDate}</ToDate>
+      <SerialNumber>${query.serialNumber}</SerialNumber>
       <UserName>ApiUser</UserName>
       <UserPassword>Api@1234</UserPassword>
       <strDataList></strDataList>
@@ -463,7 +496,7 @@ export class vendors {
   async sd_Tizw6FCQc8gA8YUD(bh) {
     try {
       console.log('server Response', bh.local.result);
-      bh = await this.sd_sMqyjURBORA7QPaS(bh);
+      bh = await this.sd_Lo2kvDJ73Hf18Lq8(bh);
       //appendnew_next_sd_Tizw6FCQc8gA8YUD
       return bh;
     } catch (e) {
@@ -471,9 +504,93 @@ export class vendors {
     }
   }
 
+  async sd_Lo2kvDJ73Hf18Lq8(bh) {
+    try {
+      let parsedValue = await XMLService.getInstance().xml(
+        bh.local.result.payload,
+        bh,
+        '$',
+        '_'
+      );
+      bh.local.parsedResult = parsedValue;
+      bh = await this.sd_IHuWR1d1dOEvT7zg(bh);
+      //appendnew_next_sd_Lo2kvDJ73Hf18Lq8
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Lo2kvDJ73Hf18Lq8');
+    }
+  }
+
+  async sd_IHuWR1d1dOEvT7zg(bh) {
+    try {
+      let attendanceDataString =
+        bh.local.parsedResult['soap:Envelope']['soap:Body'][0][
+          'GetTransactionsLogResponse'
+        ][0]['strDataList'][0];
+      let resultObj = {};
+      let transactionsStringArray = attendanceDataString.split('\n');
+      let processingEmployeeId = '';
+      let processingDate = '';
+      let employeeObj = {};
+      let dateObjStartTime = '';
+      let dateObjEndTime = '';
+      console.log(transactionsStringArray);
+      for (let i = 0; i < transactionsStringArray.length - 1; i++) {
+        let singleRowData = transactionsStringArray[i].split('\t');
+        console.log(singleRowData);
+        let currentEmployeeId = singleRowData[0];
+        let currentDate = singleRowData[1].split(' ')[0];
+        let currentTime = singleRowData[1].split(' ')[1];
+
+        if (i == 0) {
+          dateObjStartTime = currentTime;
+          dateObjEndTime = currentTime;
+          processingDate = currentDate;
+          processingEmployeeId = currentEmployeeId;
+          resultObj[processingEmployeeId] = [];
+        }
+        if (currentEmployeeId !== processingEmployeeId) {
+          resultObj[processingEmployeeId].push({
+            startTime: dateObjStartTime,
+            endTime: dateObjEndTime,
+            date: processingDate,
+          });
+          processingEmployeeId = currentEmployeeId;
+          processingDate = currentDate;
+          dateObjStartTime = currentTime;
+          resultObj[processingEmployeeId] = [];
+        }
+        if (
+          currentEmployeeId == processingEmployeeId &&
+          processingDate == currentDate
+        ) {
+          dateObjEndTime = currentTime;
+        } else if (
+          currentEmployeeId == processingEmployeeId &&
+          processingDate !== currentDate
+        ) {
+          console.log(i);
+          resultObj[processingEmployeeId].push({
+            startTime: dateObjStartTime,
+            endTime: dateObjEndTime,
+            date: processingDate,
+          });
+          processingDate = currentDate;
+          dateObjStartTime = currentTime;
+        }
+      }
+      bh.local.finalResultObj = resultObj;
+      bh = await this.sd_sMqyjURBORA7QPaS(bh);
+      //appendnew_next_sd_IHuWR1d1dOEvT7zg
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_IHuWR1d1dOEvT7zg');
+    }
+  }
+
   async sd_sMqyjURBORA7QPaS(bh) {
     try {
-      bh.web.res.status(200).send(bh.local.result);
+      bh.web.res.status(200).send(bh.local.finalResultObj);
 
       return bh;
     } catch (e) {
@@ -790,6 +907,29 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_vXAvws09sbaB07zQ');
+    }
+  }
+
+  async sd_19l6U6K5dwVYldCX(bh) {
+    try {
+      bh.input.response = await this.firestoreDb
+        .collection(bh.input.body.collectionName)
+        .add(bh.input.body.data);
+      bh = await this.sd_Z1n85a9fTyoULary(bh);
+      //appendnew_next_sd_19l6U6K5dwVYldCX
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_19l6U6K5dwVYldCX');
+    }
+  }
+
+  async sd_Z1n85a9fTyoULary(bh) {
+    try {
+      bh.web.res.status(200).send(bh.input.response);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Z1n85a9fTyoULary');
     }
   }
 

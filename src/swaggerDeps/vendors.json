@@ -29,7 +29,7 @@
             ]
         }
     },
-    "/getVendors": {
+    "/getVendorTransactions": {
         "post": {
             "summary": "",
             "description": "",
@@ -73,6 +73,21 @@
         }
     },
     "/addRole": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/addDocument": {
         "post": {
             "summary": "",
             "description": "",
