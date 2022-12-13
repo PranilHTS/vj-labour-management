@@ -365,6 +365,13 @@ export class vendors {
       let dataArray = [];
       data.forEach((firebaseDoc) => {
         let firebaseData = firebaseDoc.data();
+        if (firebaseData.startTime) {
+          console.log(
+            firebaseData.startTime.toDate(),
+            firebaseData.endTime.toDate(),
+            firebaseData.employeeId
+          );
+        }
         firebaseData.id = firebaseDoc.id;
         dataArray.push(firebaseData);
       });
