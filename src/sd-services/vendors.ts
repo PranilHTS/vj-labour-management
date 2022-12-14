@@ -361,6 +361,11 @@ export class vendors {
           bh.input.body.filter[i].value
         );
       }
+      if (bh.input.body.sort) {
+        for (let i = 0; i < bh.input.body.sort.length; i++) {
+          query = query.orderBy(bh.input.body.sort[i].field);
+        }
+      }
       let data = await query.get();
       let dataArray = [];
       data.forEach((firebaseDoc) => {
