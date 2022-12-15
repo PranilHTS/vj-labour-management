@@ -459,9 +459,9 @@ export class vendors {
           query = query.orderBy(bh.input.body.sort[i].field);
         }
       }
-      if (bh.input.body.lastDoc !== null) {
+      if (bh.input.body.lastDoc) {
         query = query.startAfter(bh.input.body.lastDoc);
-      } else if (bh.input.body.endBefore !== null) {
+      } else if (bh.input.body.endBefore) {
         query = query.endBefore(bh.input.body.endBefore);
       }
       if (bh.input.body.limit) {
@@ -1050,8 +1050,8 @@ export class vendors {
     try {
       let successDocs = [];
       let errorDocs = [];
-      for (let i = 0; i < bh.input.data.length; i++) {
-        let dateSplitArray = bh.input.data.date.split('-');
+      for (let i = 0; i < bh.input.body.data.length; i++) {
+        let dateSplitArray = bh.input.body.data[i].date.split('-');
         let year = dateSplitArray[0];
         let month = dateSplitArray[1];
         let day = dateSplitArray[2];
@@ -1063,10 +1063,10 @@ export class vendors {
             .doc(month)
             .collection('Day')
             .doc(day)
-            .add(bh.input.body.data);
-          successDocs.push(bh.input.data[i].id);
+            .add(bh.input.body.data[i]);
+          successDocs.push(bh.input.body.data[i].id);
         } catch (err) {
-          errorDocs.push(bh.input.data.id);
+          errorDocs.push(bh.input.body.data[i]);
         }
       }
       bh.input.response = { successDocs, errorDocs };
@@ -1158,7 +1158,7 @@ export class vendors {
         method: 'post',
         headers: { 'Content-Type': 'text/xml' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.body,
         paytoqs: false,
