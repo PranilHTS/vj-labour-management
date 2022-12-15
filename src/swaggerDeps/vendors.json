@@ -101,5 +101,50 @@
                 "vendors"
             ]
         }
+    },
+    "/addApprovedData": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/deleteDocument": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/addEmployeeESSL": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
     }
 }

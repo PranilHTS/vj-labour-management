@@ -315,6 +315,99 @@ export class vendors {
         this.generatedMiddlewares
       )
     );
+
+    this.app['post'](
+      `${this.serviceBasePath}/addApprovedData`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_xS1u1ROsZCQPvzZa(bh);
+          //appendnew_next_sd_Xb6g7phdvO4vRUV0
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_Xb6g7phdvO4vRUV0');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/deleteDocument`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_uBkagU3EPzbKAGXd(bh);
+          //appendnew_next_sd_tFnprJ8nFJUMbgEA
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_tFnprJ8nFJUMbgEA');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/addEmployeeESSL`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_xtaEvS4tOaD8nkT2(bh);
+          //appendnew_next_sd_p3fMYBSk8WiWBbN5
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_p3fMYBSk8WiWBbN5');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
     //appendnew_flow_vendors_HttpIn
   }
   //   service flows_vendors
@@ -365,6 +458,14 @@ export class vendors {
         for (let i = 0; i < bh.input.body.sort.length; i++) {
           query = query.orderBy(bh.input.body.sort[i].field);
         }
+      }
+      if (bh.input.body.lastDoc !== null) {
+        query = query.startAfter(bh.input.body.lastDoc);
+      } else if (bh.input.body.endBefore !== null) {
+        query = query.endBefore(bh.input.body.endBefore);
+      }
+      if (bh.input.body.limit) {
+        query = query.limit(bh.input.body.limit);
       }
       let data = await query.get();
       let dataArray = [];
@@ -942,6 +1043,204 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_Z1n85a9fTyoULary');
+    }
+  }
+
+  async sd_xS1u1ROsZCQPvzZa(bh) {
+    try {
+      let successDocs = [];
+      let errorDocs = [];
+      for (let i = 0; i < bh.input.data.length; i++) {
+        let dateSplitArray = bh.input.data.date.split('-');
+        let year = dateSplitArray[0];
+        let month = dateSplitArray[1];
+        let day = dateSplitArray[2];
+        try {
+          await this.firestoreDb
+            .collection('ApprovedUsers')
+            .doc(year)
+            .collection('Month')
+            .doc(month)
+            .collection('Day')
+            .doc(day)
+            .add(bh.input.body.data);
+          successDocs.push(bh.input.data[i].id);
+        } catch (err) {
+          errorDocs.push(bh.input.data.id);
+        }
+      }
+      bh.input.response = { successDocs, errorDocs };
+      bh = await this.sd_Mh2ZJAPzzhUokSAE(bh);
+      //appendnew_next_sd_xS1u1ROsZCQPvzZa
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_xS1u1ROsZCQPvzZa');
+    }
+  }
+
+  async sd_Mh2ZJAPzzhUokSAE(bh) {
+    try {
+      bh.web.res.status(200).send(bh.input.response);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Mh2ZJAPzzhUokSAE');
+    }
+  }
+
+  async sd_uBkagU3EPzbKAGXd(bh) {
+    try {
+      let successfulDeletions = [];
+      let failedDeletions = [];
+      for (let i = 0; i < bh.input.body.data.length; i++) {
+        try {
+          await this.firestoreDb
+            .collection(bh.input.body.collectionName)
+            .doc(bh.input.body.data[i].id)
+            .delete();
+          successfulDeletions.push(bh.input.body.data[i].id);
+        } catch (err) {
+          failedDeletions.push(bh.input.body.data[i].id);
+        }
+      }
+      bh.input.response = { successfulDeletions, failedDeletions };
+      bh = await this.sd_Z83HkYP5wrape8cz(bh);
+      //appendnew_next_sd_uBkagU3EPzbKAGXd
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_uBkagU3EPzbKAGXd');
+    }
+  }
+
+  async sd_Z83HkYP5wrape8cz(bh) {
+    try {
+      bh.web.res.status(200).send(bh.input.response);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Z83HkYP5wrape8cz');
+    }
+  }
+
+  async sd_xtaEvS4tOaD8nkT2(bh) {
+    try {
+      let data = bh.input.body;
+      console.log(bh.input.body);
+      bh.local.body = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <AddEmployee xmlns="http://tempuri.org/">
+      <APIKey>string</APIKey>
+      <EmployeeCode>${data.employeeCode}</EmployeeCode>
+      <EmployeeName>${data.employeeName}</EmployeeName>
+      <CardNumber></CardNumber>
+      <SerialNumber>${data.serialNumber}</SerialNumber>
+      <UserName>ApiUser</UserName>
+      <UserPassword>Api@1234</UserPassword>
+      <CommandId>1</CommandId>
+    </AddEmployee>
+  </soap:Body>
+</soap:Envelope>
+`;
+      bh = await this.sd_HVVCrKKyMrtkPiyc(bh);
+      //appendnew_next_sd_xtaEvS4tOaD8nkT2
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_xtaEvS4tOaD8nkT2');
+    }
+  }
+
+  async sd_HVVCrKKyMrtkPiyc(bh) {
+    try {
+      let requestOptions = {
+        url: 'http://125.99.67.214:8526/webapiservice.asmx?',
+        timeout: 30000,
+        method: 'post',
+        headers: { 'Content-Type': 'text/xml' },
+        followRedirects: true,
+        cookies: undefined,
+        authType: undefined,
+        body: bh.local.body,
+        paytoqs: false,
+        proxyConfig: undefined,
+        tlsConfig: undefined,
+        ret: 'text',
+        params: { op: 'AddEmployee' },
+        username: undefined,
+        password: undefined,
+        token: undefined,
+        rejectUnauthorized: undefined,
+        useQuerystring: false,
+      };
+      if (!false) {
+        requestOptions.rejectUnauthorized = false;
+      }
+      requestOptions.tlsConfig = undefined;
+      requestOptions.proxyConfig = undefined;
+      let responseMsg: any = await this.sdService.httpRequest(
+        requestOptions.url,
+        requestOptions.timeout,
+        requestOptions.method,
+        requestOptions.headers,
+        requestOptions.followRedirects,
+        requestOptions.cookies,
+        requestOptions.authType,
+        requestOptions.body,
+        requestOptions.paytoqs,
+        requestOptions.proxyConfig,
+        requestOptions.tlsConfig,
+        requestOptions.ret,
+        requestOptions.params,
+        requestOptions.rejectUnauthorized,
+        requestOptions.username,
+        requestOptions.password,
+        requestOptions.token
+      );
+
+      bh.local.result = responseMsg;
+      bh = await this.sd_DCqL7bZneIzYd9Se(bh);
+      //appendnew_next_sd_HVVCrKKyMrtkPiyc
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_HVVCrKKyMrtkPiyc');
+    }
+  }
+
+  async sd_DCqL7bZneIzYd9Se(bh) {
+    try {
+      console.log('server Response', bh.local.result);
+      bh = await this.sd_v5VQcm1sHdynIu0k(bh);
+      //appendnew_next_sd_DCqL7bZneIzYd9Se
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_DCqL7bZneIzYd9Se');
+    }
+  }
+
+  async sd_v5VQcm1sHdynIu0k(bh) {
+    try {
+      let parsedValue = await XMLService.getInstance().xml(
+        bh.local.result.payload,
+        bh,
+        '$',
+        '_'
+      );
+      bh.local.parsedResult = parsedValue;
+      bh = await this.sd_yygTbYCYYXkmVuRb(bh);
+      //appendnew_next_sd_v5VQcm1sHdynIu0k
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_v5VQcm1sHdynIu0k');
+    }
+  }
+
+  async sd_yygTbYCYYXkmVuRb(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.parsedResult);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_yygTbYCYYXkmVuRb');
     }
   }
 
