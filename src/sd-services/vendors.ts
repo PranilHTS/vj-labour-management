@@ -317,37 +317,6 @@ export class vendors {
     );
 
     this.app['post'](
-      `${this.serviceBasePath}/addApprovedData`,
-      cookieParser(),
-      this.sdService.getMiddlesWaresBySequenceId(
-        null,
-        'pre',
-        this.generatedMiddlewares
-      ),
-
-      async (req, res, next) => {
-        let bh: any = {};
-        try {
-          bh = this.sdService.__constructDefault(
-            { local: {}, input: {} },
-            req,
-            res,
-            next
-          );
-          bh = await this.sd_xS1u1ROsZCQPvzZa(bh);
-          //appendnew_next_sd_Xb6g7phdvO4vRUV0
-        } catch (e) {
-          return await this.errorHandler(bh, e, 'sd_Xb6g7phdvO4vRUV0');
-        }
-      },
-      this.sdService.getMiddlesWaresBySequenceId(
-        null,
-        'post',
-        this.generatedMiddlewares
-      )
-    );
-
-    this.app['post'](
       `${this.serviceBasePath}/deleteDocument`,
       cookieParser(),
       this.sdService.getMiddlesWaresBySequenceId(
@@ -400,6 +369,37 @@ export class vendors {
           //appendnew_next_sd_p3fMYBSk8WiWBbN5
         } catch (e) {
           return await this.errorHandler(bh, e, 'sd_p3fMYBSk8WiWBbN5');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/addApprovedData`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_xS1u1ROsZCQPvzZa(bh);
+          //appendnew_next_sd_1mE2ZUXLahrQ4Rn4
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_1mE2ZUXLahrQ4Rn4');
         }
       },
       this.sdService.getMiddlesWaresBySequenceId(
@@ -1046,48 +1046,6 @@ export class vendors {
     }
   }
 
-  async sd_xS1u1ROsZCQPvzZa(bh) {
-    try {
-      let successDocs = [];
-      let errorDocs = [];
-      for (let i = 0; i < bh.input.body.data.length; i++) {
-        let dateSplitArray = bh.input.body.data[i].date.split('-');
-        let year = dateSplitArray[0];
-        let month = dateSplitArray[1];
-        let day = dateSplitArray[2];
-        try {
-          await this.firestoreDb
-            .collection('ApprovedUsers')
-            .doc(year)
-            .collection('Month')
-            .doc(month)
-            .collection('Day')
-            .doc(day)
-            .add(bh.input.body.data[i]);
-          successDocs.push(bh.input.body.data[i].id);
-        } catch (err) {
-          errorDocs.push(bh.input.body.data[i]);
-        }
-      }
-      bh.input.response = { successDocs, errorDocs };
-      bh = await this.sd_Mh2ZJAPzzhUokSAE(bh);
-      //appendnew_next_sd_xS1u1ROsZCQPvzZa
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_xS1u1ROsZCQPvzZa');
-    }
-  }
-
-  async sd_Mh2ZJAPzzhUokSAE(bh) {
-    try {
-      bh.web.res.status(200).send(bh.input.response);
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_Mh2ZJAPzzhUokSAE');
-    }
-  }
-
   async sd_uBkagU3EPzbKAGXd(bh) {
     try {
       let successfulDeletions = [];
@@ -1096,11 +1054,12 @@ export class vendors {
         try {
           await this.firestoreDb
             .collection(bh.input.body.collectionName)
-            .doc(bh.input.body.data[i].id)
+            .doc(bh.input.body.data[i])
             .delete();
-          successfulDeletions.push(bh.input.body.data[i].id);
+          successfulDeletions.push(bh.input.body.data[i]);
         } catch (err) {
-          failedDeletions.push(bh.input.body.data[i].id);
+          console.log(err);
+          failedDeletions.push(bh.input.body.data[i]);
         }
       }
       bh.input.response = { successfulDeletions, failedDeletions };
@@ -1241,6 +1200,47 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_yygTbYCYYXkmVuRb');
+    }
+  }
+
+  async sd_xS1u1ROsZCQPvzZa(bh) {
+    try {
+      let successDocs = [];
+      console.log(bh.input.body);
+      let errorDocs = [];
+      for (let i = 0; i < bh.input.body.data.length; i++) {
+        let dateSplitArray = bh.input.body.data[i].date.split('-');
+        let year = dateSplitArray[0];
+        let month = dateSplitArray[1];
+        let day = dateSplitArray[2];
+        try {
+          await this.firestoreDb
+            .collection(
+              'ApprovedUsers/' + year + '/' + month + '/' + day + '/attendance'
+            )
+            .add(bh.input.body.data[i]);
+          successDocs.push(bh.input.body.data[i].id);
+        } catch (err) {
+          console.log(err);
+          errorDocs.push({ doc: bh.input.body.data[i], err });
+        }
+      }
+      bh.input.response = { successDocs, errorDocs };
+      bh = await this.sd_Mh2ZJAPzzhUokSAE(bh);
+      //appendnew_next_sd_xS1u1ROsZCQPvzZa
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_xS1u1ROsZCQPvzZa');
+    }
+  }
+
+  async sd_Mh2ZJAPzzhUokSAE(bh) {
+    try {
+      bh.web.res.status(200).send(bh.input.response);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Mh2ZJAPzzhUokSAE');
     }
   }
 

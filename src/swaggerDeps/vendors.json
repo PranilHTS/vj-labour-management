@@ -102,21 +102,6 @@
             ]
         }
     },
-    "/addApprovedData": {
-        "post": {
-            "summary": "",
-            "description": "",
-            "consumes": [
-                "application/json"
-            ],
-            "produces": [],
-            "parameters": [],
-            "responses": {},
-            "tags": [
-                "vendors"
-            ]
-        }
-    },
     "/deleteDocument": {
         "post": {
             "summary": "",
@@ -133,6 +118,21 @@
         }
     },
     "/addEmployeeESSL": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/addApprovedData": {
         "post": {
             "summary": "",
             "description": "",
