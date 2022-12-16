@@ -834,7 +834,9 @@ export class vendors {
 
   async sd_2D1QeJgwLmTWB1Gg(bh) {
     try {
-      bh.web.res.status(200).send({ success: true });
+      bh.web.res
+        .status(200)
+        .send({ success: true, userDocData: bh.local.userDocData });
 
       return bh;
     } catch (e) {
