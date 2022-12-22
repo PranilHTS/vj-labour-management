@@ -1503,7 +1503,7 @@ export class vendors {
 
   firebaseInitializationFunction() {
     readFile(
-      'C:\\Users\\Jayant\\neutrinos-studio\\vj-labour-management\\server\\assets\\vj-labour-onboarding-firebase-adminsdk-mgu4s-873c238c22.json',
+      'assets\\vj-labour-onboarding-firebase-adminsdk-mgu4s-873c238c22.json',
       'utf8',
       (err, jsonString) => {
         if (err) {
