@@ -1503,7 +1503,34 @@ export class vendors {
 
   firebaseInitializationFunction() {
 
-
+    const serviceAccount:any = {
+      "type": "service_account",
+      "project_id": "vj-labour-onboarding",
+      "private_key_id": "873c238c22506924e6c0b3bdbd02f4675637c19f",
+      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDeeR5ZaFKlFIq5\noSAurmWudNqyldv8nPlEfOdCNqQfpQkhDvL6P39aFooNgXO1XV1dPaGBWg+YJXUq\n17/aADjib9x+zphGjWC3+7pv+QOZQWpa3orl/0Ow9mmJL2opyncAIq+6hgm5UVPJ\n/LKrPk5QOSATpBbWloUTzvDyvBwlusUXFQ2VXlsrr1D524IYb2gkRJq2O8fB2TQd\n28TqlivDhG7fbSWE8J0ylU1PmFhugB4ybPgskXS1awzB0i1917UTCpZT/Ri60fx4\nZMIwKZ7SrhtPof0335M0hawhZdo8askp6Yrxw/c5Zy2dfY8J5K8hYqXsj5wHThim\na6GPRuZBAgMBAAECggEAPzG4ZT00/J9xKHmUYq43Q+79kGzxKDiOtd2k8zICPNrs\nVO+iJWOUEUsFvABhlcsHkkzHa67hbx50wc63OH2HqwqLX5nft2rBZoGi29uoIghq\n5ZUBb4Oq/sGACO/nACf61ZcEw77/VBy96EpXlj0EkdUoP2wE8L+g3ZeS6eB1PmHf\nZkDbYOwIyjkiO9ok75G9C563TXIytlkWzMndww1PDhVgKHIAOAGmGGVG4abxkQQF\nfuPOqQXwUO8SYVwfrpX/AGyAGML1CpBaStKXTCLVvBVe+FVAYHYPLSC3Hm7hqucw\nzv2cX4+pLMl78/cB9dfv1TL76e58EjB+piZkPOmAYQKBgQD/XZP5j8w5EOPeSzFc\n2b4aZwiKhSTlFO7aP8aldhyKphERQaCznS25Rsax442cVzkmXdHxwIDmQcNA/jSp\n9VryN2He2WZojQGtxxj/cBFcXxajIifE39WYBZle6M2ZkNqSnZ+4B4FrsBdjjdsh\nY9PSZ9n+geU5Y/rFu4UJXx4kCwKBgQDfBp6mNFWaQ0DFO8A/S1zAFDP9+34TSyv1\nPCJmPFOJMhJ38H+llXIqvcZ54gFzCv0rfxuNyBUMbppwVmSfcG0sKYABOaOXBSUP\ngGIQb920/WUmzLfRSxQ3pYS4mvlIWLY5+8DPw3rcjgFzL5uGqjhjh6jDLqzxbOqU\ngP/BLXCiYwKBgHhDCb0uC2+UlLvLjaO8p9qnS05xBb8c7J+8CUFDLo3dR4xo69Wq\n4C2xN0HveHF4YmG/LXA8yHen4Nxq20JvWjVX/6+DkscKIRBGA2/Ix2RJI9AP9cqx\n31WIzYH1AV6g6U7DDMUOQ9UDSQCJfflrmgYtAmzpn5o3i5IzjaOsN/WhAoGASqEC\ncYdNpcMfZ2BpIkTrknKwOyruszISUYt/z0ocgeo5d90IObZab6b1RU+1QHPK58Uu\nyTDMqk5Qa4rdPOT4AzEX3lEVRrG4Bwnkxq9INwob0PHsCKLg7wX59XQWOnlE8P4n\nNN6qvCbgoVSq7FMFb3izpix2Pos9q9fGvTOhXxUCgYA9/9RwyXZMFmOKhoXr2QId\n4x+xDVJZfA9DGQSKiBBWFYbkicXAIJ9qji4ZAUAOdDjT277RVUsoiMsS67OdDytY\nMdYatC5wcIONA3nO/0ypNByJ3E4PbAx5qojdq5tFwCTzufkn6Six6xKktLIEzMKM\nTLvEc+nIk7udEKOwbSZeEQ==\n-----END PRIVATE KEY-----\n",
+      "client_email": "firebase-adminsdk-mgu4s@vj-labour-onboarding.iam.gserviceaccount.com",
+      "client_id": "113425014157321564425",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgu4s%40vj-labour-onboarding.iam.gserviceaccount.com"
+    };
+    let app = initializeApp({
+      credential: cert(serviceAccount),
+    });
+    this.firestoreDb = getFirestore(app);
+    this.firebaseAuth = getAuth(app);
+    this.firebaseClientAuth = clientGetAuth(
+      clientInitializeApp({
+        apiKey: 'AIzaSyA8yl-q-sgS-TU7XgkOYtXTiw6wBtFqDWw',
+        authDomain: 'vj-labour-onboarding.firebaseapp.com',
+        projectId: 'vj-labour-onboarding',
+        storageBucket: 'vj-labour-onboarding.appspot.com',
+        messagingSenderId: '1006675202027',
+        appId: '1:1006675202027:web:7494a83879b5d0b074d3ae',
+        measurementId: 'G-GQYWHQNY42',
+      })
+    );
        
 
   }
