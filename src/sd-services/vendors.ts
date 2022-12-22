@@ -232,37 +232,6 @@ export class vendors {
     );
 
     this.app['post'](
-      `${this.serviceBasePath}/createAdminUser`,
-      cookieParser(),
-      this.sdService.getMiddlesWaresBySequenceId(
-        null,
-        'pre',
-        this.generatedMiddlewares
-      ),
-
-      async (req, res, next) => {
-        let bh: any = {};
-        try {
-          bh = this.sdService.__constructDefault(
-            { local: {}, input: {} },
-            req,
-            res,
-            next
-          );
-          bh = await this.sd_0qF8C9IXQ6LYRVR3(bh);
-          //appendnew_next_sd_gP57Gc2EDeQmXA1w
-        } catch (e) {
-          return await this.errorHandler(bh, e, 'sd_gP57Gc2EDeQmXA1w');
-        }
-      },
-      this.sdService.getMiddlesWaresBySequenceId(
-        null,
-        'post',
-        this.generatedMiddlewares
-      )
-    );
-
-    this.app['post'](
       `${this.serviceBasePath}/addRole`,
       cookieParser(),
       this.sdService.getMiddlesWaresBySequenceId(
@@ -418,7 +387,7 @@ export class vendors {
     );
 
     this.app['post'](
-      `${this.serviceBasePath}/addAdminUser`,
+      `${this.serviceBasePath}/createAdminUser`,
       cookieParser(),
       this.sdService.getMiddlesWaresBySequenceId(
         null,
@@ -435,7 +404,7 @@ export class vendors {
             res,
             next
           );
-          bh = await this.sd_881w0U6YPdipP6XH(bh);
+          bh = await this.sd_NyYR80gQ1NRFGcub(bh);
           //appendnew_next_sd_rheYR5QoQkElSS2j
         } catch (e) {
           return await this.errorHandler(bh, e, 'sd_rheYR5QoQkElSS2j');
@@ -945,93 +914,6 @@ export class vendors {
     }
   }
 
-  async sd_0qF8C9IXQ6LYRVR3(bh) {
-    try {
-      let userInfo = bh.input.body;
-      let availableData = Object.keys(userInfo);
-      bh.local.isBodyCorrect = [
-        'email',
-        'password',
-        'projects',
-        'name',
-        'mobile',
-        'role',
-      ].every((val) => availableData.includes(val));
-
-      bh = await this.sd_WzkhjuHSctClWizL(bh);
-      //appendnew_next_sd_0qF8C9IXQ6LYRVR3
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_0qF8C9IXQ6LYRVR3');
-    }
-  }
-
-  async sd_WzkhjuHSctClWizL(bh) {
-    try {
-      if (
-        this.sdService.operators['true'](
-          bh.local.isBodyCorrect,
-          undefined,
-          undefined,
-          undefined
-        )
-      ) {
-        bh = await this.sd_12zKUFgts9zGGTML(bh);
-      } else if (
-        this.sdService.operators['false'](
-          bh.local.isBodyCorrect,
-          undefined,
-          undefined,
-          undefined
-        )
-      ) {
-        bh = await this.sd_XiQZIrzeGFFvlu3w(bh);
-      }
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_WzkhjuHSctClWizL');
-    }
-  }
-
-  async sd_12zKUFgts9zGGTML(bh) {
-    try {
-      bh.local.addResult = await this.firestoreDb
-        .collection('AdminUsers')
-        .add(bh.input.body);
-      bh = await this.sd_IBtxjti2D2UpLyta(bh);
-      //appendnew_next_sd_12zKUFgts9zGGTML
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_12zKUFgts9zGGTML');
-    }
-  }
-
-  async sd_IBtxjti2D2UpLyta(bh) {
-    try {
-      bh.web.res.status(200).send(bh.local.addResult);
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_IBtxjti2D2UpLyta');
-    }
-  }
-
-  async sd_XiQZIrzeGFFvlu3w(bh) {
-    try {
-      bh.web.res
-        .status(200)
-        .send({
-          success: false,
-          message: 'Body does not have the right information',
-        });
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_XiQZIrzeGFFvlu3w');
-    }
-  }
-
   async sd_529l87oeLr3BAF0Y(bh) {
     try {
       let userInfo = bh.input.body;
@@ -1335,6 +1217,55 @@ export class vendors {
     }
   }
 
+  async sd_NyYR80gQ1NRFGcub(bh) {
+    try {
+      let userInfo = bh.input.body;
+      let availableData = Object.keys(userInfo);
+      bh.local.isBodyCorrect = [
+        'email',
+        'password',
+        'projects',
+        'name',
+        'mobile',
+        'role',
+      ].every((val) => availableData.includes(val));
+
+      bh = await this.sd_nHzFjfY2zwn64qRr(bh);
+      //appendnew_next_sd_NyYR80gQ1NRFGcub
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_NyYR80gQ1NRFGcub');
+    }
+  }
+
+  async sd_nHzFjfY2zwn64qRr(bh) {
+    try {
+      if (
+        this.sdService.operators['true'](
+          bh.local.isBodyCorrect,
+          undefined,
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.sd_881w0U6YPdipP6XH(bh);
+      } else if (
+        this.sdService.operators['false'](
+          bh.local.isBodyCorrect,
+          undefined,
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.sd_UCpVDnXOdb82zfjx(bh);
+      }
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_nHzFjfY2zwn64qRr');
+    }
+  }
+
   async sd_881w0U6YPdipP6XH(bh) {
     try {
       let data = bh.input.body;
@@ -1347,7 +1278,7 @@ export class vendors {
         .collection('AdminUsers')
         .doc(userRecord.uid)
         .set(data);
-      bh = await this.sd_uB19o1jULMvpUaJC(bh);
+      bh = await this.sd_FJZOzDw0Mi1wxqJp(bh);
       //appendnew_next_sd_881w0U6YPdipP6XH
       return bh;
     } catch (e) {
@@ -1355,13 +1286,41 @@ export class vendors {
     }
   }
 
-  async sd_uB19o1jULMvpUaJC(bh) {
+  async sd_FJZOzDw0Mi1wxqJp(bh) {
     try {
-      bh.web.res.status(200).send(bh.local.writeResult);
+      bh.local.addResult = await this.firestoreDb
+        .collection('AdminUsers')
+        .add(bh.input.body);
+      bh = await this.sd_CaLITEAdz7WxZrk3(bh);
+      //appendnew_next_sd_FJZOzDw0Mi1wxqJp
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_FJZOzDw0Mi1wxqJp');
+    }
+  }
+
+  async sd_CaLITEAdz7WxZrk3(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.addResult);
 
       return bh;
     } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_uB19o1jULMvpUaJC');
+      return await this.errorHandler(bh, e, 'sd_CaLITEAdz7WxZrk3');
+    }
+  }
+
+  async sd_UCpVDnXOdb82zfjx(bh) {
+    try {
+      bh.web.res
+        .status(200)
+        .send({
+          success: false,
+          message: 'Body does not have the right information',
+        });
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_UCpVDnXOdb82zfjx');
     }
   }
 

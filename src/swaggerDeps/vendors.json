@@ -57,21 +57,6 @@
             ]
         }
     },
-    "/createAdminUser": {
-        "post": {
-            "summary": "",
-            "description": "",
-            "consumes": [
-                "application/json"
-            ],
-            "produces": [],
-            "parameters": [],
-            "responses": {},
-            "tags": [
-                "vendors"
-            ]
-        }
-    },
     "/addRole": {
         "post": {
             "summary": "",
@@ -147,7 +132,7 @@
             ]
         }
     },
-    "/addAdminUser": {
+    "/createAdminUser": {
         "post": {
             "summary": "",
             "description": "",
