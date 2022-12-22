@@ -16,10 +16,18 @@ import log from '../utils/Logger'; //_splitter_
 import { initializeApp, cert } from 'firebase-admin/app'; //_splitter_
 import { readFile } from 'fs'; //_splitter_
 import { getFirestore } from 'firebase-admin/firestore'; //_splitter_
+import { getAuth } from 'firebase-admin/auth'; //_splitter_
+import { initializeApp as clientInitializeApp } from 'firebase/app'; //_splitter_
+import {
+  getAuth as clientGetAuth,
+  signInWithEmailAndPassword,
+} from 'firebase/auth'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
 export class vendors {
   public firestoreDb: any;
+  public firebaseAuth: any;
+  public firebaseClientAuth: any;
   private sdService = new SDBaseService();
   private app;
   private serviceBasePath: string;
@@ -408,6 +416,68 @@ export class vendors {
         this.generatedMiddlewares
       )
     );
+
+    this.app['post'](
+      `${this.serviceBasePath}/addAdminUser`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_881w0U6YPdipP6XH(bh);
+          //appendnew_next_sd_rheYR5QoQkElSS2j
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_rheYR5QoQkElSS2j');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/signInAdmin`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_h29Gr1sk9pWNAkpM(bh);
+          //appendnew_next_sd_fVAZf80ulvkjIKmd
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_fVAZf80ulvkjIKmd');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
     //appendnew_flow_vendors_HttpIn
   }
   //   service flows_vendors
@@ -419,7 +489,7 @@ export class vendors {
         local: {},
       };
       bh = this.sdService.__constructDefault(bh);
-      bh = await this.sd_yg8sHmwPWkL1FRBE(bh);
+      bh = await this.sd_SZnwPyYJ0SNiNzDi(bh);
       //appendnew_next_sd_F5toUQkYambgeaRe
       return (
         // formatting output variables
@@ -435,12 +505,31 @@ export class vendors {
 
   //appendnew_flow_vendors_start
 
-  async sd_yg8sHmwPWkL1FRBE(bh) {
+  async sd_SZnwPyYJ0SNiNzDi(bh) {
     try {
-      //appendnew_next_sd_yg8sHmwPWkL1FRBE
+      bh.firebaseConfig = {
+        apiKey: 'AIzaSyA8yl-q-sgS-TU7XgkOYtXTiw6wBtFqDWw',
+        authDomain: 'vj-labour-onboarding.firebaseapp.com',
+        projectId: 'vj-labour-onboarding',
+        storageBucket: 'vj-labour-onboarding.appspot.com',
+        messagingSenderId: '1006675202027',
+        appId: '1:1006675202027:web:7494a83879b5d0b074d3ae',
+        measurementId: 'G-GQYWHQNY42',
+      };
+      bh = await this.sd_nFpTiP33sERo0WLF(bh);
+      //appendnew_next_sd_SZnwPyYJ0SNiNzDi
       return bh;
     } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_yg8sHmwPWkL1FRBE');
+      return await this.errorHandler(bh, e, 'sd_SZnwPyYJ0SNiNzDi');
+    }
+  }
+
+  async sd_nFpTiP33sERo0WLF(bh) {
+    try {
+      //appendnew_next_sd_nFpTiP33sERo0WLF
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_nFpTiP33sERo0WLF');
     }
   }
 
@@ -1246,6 +1335,181 @@ export class vendors {
     }
   }
 
+  async sd_881w0U6YPdipP6XH(bh) {
+    try {
+      let data = bh.input.body;
+      let userRecord = await this.firebaseAuth.createUser({
+        email: data.email,
+        phoneNumber: data.mobile,
+        password: data.password,
+      });
+      bh.local.writeResult = this.firestoreDb
+        .collection('AdminUsers')
+        .doc(userRecord.uid)
+        .set(data);
+      bh = await this.sd_uB19o1jULMvpUaJC(bh);
+      //appendnew_next_sd_881w0U6YPdipP6XH
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_881w0U6YPdipP6XH');
+    }
+  }
+
+  async sd_uB19o1jULMvpUaJC(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.writeResult);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_uB19o1jULMvpUaJC');
+    }
+  }
+
+  async sd_h29Gr1sk9pWNAkpM(bh) {
+    try {
+      let data = bh.input.body;
+      bh.local.signInSuccess = { success: true };
+      try {
+        bh.local.signInResult = await signInWithEmailAndPassword(
+          this.firebaseClientAuth,
+          data.email,
+          data.password
+        );
+        console.log(bh.local.signInResult);
+      } catch (err) {
+        bh.local.signInSuccess = { success: false };
+      }
+
+      bh = await this.sd_lCmdnR1TI3kQ2jX9(bh);
+      //appendnew_next_sd_h29Gr1sk9pWNAkpM
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_h29Gr1sk9pWNAkpM');
+    }
+  }
+
+  async sd_lCmdnR1TI3kQ2jX9(bh) {
+    try {
+      if (
+        this.sdService.operators['true'](
+          bh.local.signInSuccess.success,
+          undefined,
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.sd_YxezhWH3atbG2cqs(bh);
+      } else if (
+        this.sdService.operators['false'](
+          bh.local.signInSuccess.success,
+          undefined,
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.sd_tVoN2L8SfVNxnCty(bh);
+      }
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_lCmdnR1TI3kQ2jX9');
+    }
+  }
+
+  async sd_YxezhWH3atbG2cqs(bh) {
+    try {
+      bh.local.userDocs = await this.firestoreDb
+        .collection('AdminUsers')
+        .where('email', '==', bh.input.body.email)
+        .get();
+      console.log(bh.local.userDocs.empty);
+      bh = await this.sd_5LF8GSuaI9CWVrPN(bh);
+      //appendnew_next_sd_YxezhWH3atbG2cqs
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_YxezhWH3atbG2cqs');
+    }
+  }
+
+  async sd_5LF8GSuaI9CWVrPN(bh) {
+    try {
+      if (
+        this.sdService.operators['true'](
+          bh.local.userDocs.empty,
+          undefined,
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.sd_Gdz4K5C5QQYmnuN5(bh);
+      } else if (
+        this.sdService.operators['false'](
+          bh.local.userDocs.empty,
+          undefined,
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.sd_SwRM8plApCGbtGZ3(bh);
+      }
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_5LF8GSuaI9CWVrPN');
+    }
+  }
+
+  async sd_Gdz4K5C5QQYmnuN5(bh) {
+    try {
+      bh.web.res
+        .status(200)
+        .send({ error: 'Invalid email or password', success: false });
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Gdz4K5C5QQYmnuN5');
+    }
+  }
+
+  async sd_SwRM8plApCGbtGZ3(bh) {
+    try {
+      bh.local.userDocs.forEach((userDoc) => {
+        bh.local.userDocData = userDoc.data();
+        bh.local.userDocData.id = userDoc.id;
+      });
+
+      bh = await this.sd_n5PAppLpNzpJvZog(bh);
+      //appendnew_next_sd_SwRM8plApCGbtGZ3
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_SwRM8plApCGbtGZ3');
+    }
+  }
+
+  async sd_n5PAppLpNzpJvZog(bh) {
+    try {
+      bh.web.res
+        .status(200)
+        .send({ success: true, userDocData: bh.local.userDocData });
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_n5PAppLpNzpJvZog');
+    }
+  }
+
+  async sd_tVoN2L8SfVNxnCty(bh) {
+    try {
+      bh.web.res
+        .status(200)
+        .send({ error: 'Invalid email or password', success: false });
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_tVoN2L8SfVNxnCty');
+    }
+  }
+
   //appendnew_node
 
   async errorHandler(bh, e, src) {
@@ -1280,7 +1544,7 @@ export class vendors {
 
   firebaseInitializationFunction() {
     readFile(
-      'assets/vj-labour-onboarding-firebase-adminsdk-mgu4s-873c238c22.json',
+      'C:\\Users\\Jayant\\neutrinos-studio\\vj-labour-management\\server\\assets\\vj-labour-onboarding-firebase-adminsdk-mgu4s-873c238c22.json',
       'utf8',
       (err, jsonString) => {
         if (err) {
@@ -1293,6 +1557,18 @@ export class vendors {
           credential: cert(serviceAccount),
         });
         this.firestoreDb = getFirestore(app);
+        this.firebaseAuth = getAuth(app);
+        this.firebaseClientAuth = clientGetAuth(
+          clientInitializeApp({
+            apiKey: 'AIzaSyA8yl-q-sgS-TU7XgkOYtXTiw6wBtFqDWw',
+            authDomain: 'vj-labour-onboarding.firebaseapp.com',
+            projectId: 'vj-labour-onboarding',
+            storageBucket: 'vj-labour-onboarding.appspot.com',
+            messagingSenderId: '1006675202027',
+            appId: '1:1006675202027:web:7494a83879b5d0b074d3ae',
+            measurementId: 'G-GQYWHQNY42',
+          })
+        );
       }
     );
   }
