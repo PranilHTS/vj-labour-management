@@ -15,7 +15,7 @@ import * as settings from '../config/config'; //_splitter_
 import log from '../utils/Logger'; //_splitter_
 import { initializeApp, cert } from 'firebase-admin/app'; //_splitter_
 import { readFile } from 'fs'; //_splitter_
-import { getFirestore } from 'firebase-admin/firestore'; //_splitter_
+import { getFirestore,Timestamp } from 'firebase-admin/firestore'; //_splitter_
 import { getAuth } from 'firebase-admin/auth'; //_splitter_
 import { initializeApp as clientInitializeApp } from 'firebase/app'; //_splitter_
 import {
@@ -534,8 +534,20 @@ export class vendors {
         }
       }
       if (bh.input.body.lastDoc) {
+        if (bh.input.body.lastDoc._seconds) {
+          bh.input.body.lastDoc = new Timestamp(
+            bh.input.body.lastDoc._seconds,
+            bh.input.body.lastDoc._nanoseconds
+          );
+        }
         query = query.startAfter(bh.input.body.lastDoc);
       } else if (bh.input.body.endBefore) {
+        if (bh.input.body.endBefore._seconds) {
+          bh.input.body.endBefore = new Timestamp(
+            bh.input.body.endBefore._seconds,
+            bh.input.body.endBefore._nanoseconds
+          );
+        }
         query = query.endBefore(bh.input.body.endBefore);
       }
       if (bh.input.body.limit) {
@@ -627,7 +639,7 @@ export class vendors {
   async sd_prAvwpAAjHJ4sl3X(bh) {
     try {
       let requestOptions = {
-        url: 'http://125.99.67.214:8526/iclock/WebAPIService.asmx',
+        url: 'http://103.186.18.61:8526/iclock/WebAPIService.asmx',
         timeout: 30000,
         method: 'post',
         headers: { 'Content-Type': 'text/xml' },
@@ -1164,7 +1176,7 @@ export class vendors {
       let data = bh.input.body;
       let userRecord = await this.firebaseAuth.createUser({
         email: data.email,
-        phoneNumber: data.mobile,
+        phoneNumber: '+91' + data.mobile,
         password: data.password,
         name: data.name,
       });
