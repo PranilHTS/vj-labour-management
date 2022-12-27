@@ -201,37 +201,6 @@ export class vendors {
     );
 
     this.app['post'](
-      `${this.serviceBasePath}/login`,
-      cookieParser(),
-      this.sdService.getMiddlesWaresBySequenceId(
-        null,
-        'pre',
-        this.generatedMiddlewares
-      ),
-
-      async (req, res, next) => {
-        let bh: any = {};
-        try {
-          bh = this.sdService.__constructDefault(
-            { local: {}, input: {} },
-            req,
-            res,
-            next
-          );
-          bh = await this.sd_RPHyvWHJNvx3f5S3(bh);
-          //appendnew_next_sd_RXRWAAsdZFzb4A1D
-        } catch (e) {
-          return await this.errorHandler(bh, e, 'sd_RXRWAAsdZFzb4A1D');
-        }
-      },
-      this.sdService.getMiddlesWaresBySequenceId(
-        null,
-        'post',
-        this.generatedMiddlewares
-      )
-    );
-
-    this.app['post'](
       `${this.serviceBasePath}/addRole`,
       cookieParser(),
       this.sdService.getMiddlesWaresBySequenceId(
@@ -418,7 +387,7 @@ export class vendors {
     );
 
     this.app['post'](
-      `${this.serviceBasePath}/signInAdmin`,
+      `${this.serviceBasePath}/login`,
       cookieParser(),
       this.sdService.getMiddlesWaresBySequenceId(
         null,
@@ -439,6 +408,37 @@ export class vendors {
           //appendnew_next_sd_fVAZf80ulvkjIKmd
         } catch (e) {
           return await this.errorHandler(bh, e, 'sd_fVAZf80ulvkjIKmd');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/blockOrUnblockUser`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_GRAMNdDqLIbyCtQi(bh);
+          //appendnew_next_sd_x7D87XwOyZ6vbMcI
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_x7D87XwOyZ6vbMcI');
         }
       },
       this.sdService.getMiddlesWaresBySequenceId(
@@ -485,7 +485,7 @@ export class vendors {
         appId: '1:1006675202027:web:7494a83879b5d0b074d3ae',
         measurementId: 'G-GQYWHQNY42',
       };
-      bh = await this.sd_nFpTiP33sERo0WLF(bh);
+      bh = await this.sd_PtRb5KsxoK66rOXT(bh);
       //appendnew_next_sd_SZnwPyYJ0SNiNzDi
       return bh;
     } catch (e) {
@@ -493,26 +493,42 @@ export class vendors {
     }
   }
 
-  async sd_nFpTiP33sERo0WLF(bh) {
+  async sd_PtRb5KsxoK66rOXT(bh) {
     try {
-      //appendnew_next_sd_nFpTiP33sERo0WLF
+      //appendnew_next_sd_PtRb5KsxoK66rOXT
       return bh;
     } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_nFpTiP33sERo0WLF');
+      return await this.errorHandler(bh, e, 'sd_PtRb5KsxoK66rOXT');
     }
   }
 
   async sd_npVueYySnG3qNfeN(bh) {
     try {
       let query = this.firestoreDb.collection(bh.input.body.collectionName);
-      for (let i = 0; i < bh.input.body.filter.length; i++) {
-        query = query.where(
-          bh.input.body.filter[i].field,
-          '==',
-          bh.input.body.filter[i].value
-        );
+      if (bh.input.body.filter) {
+        for (let i = 0; i < bh.input.body.filter.length; i++) {
+          let operator = bh.input.body.filter[i].operator
+            ? bh.input.body.filter[i].operator
+            : '==';
+          query = query.where(
+            bh.input.body.filter[i].field,
+            operator,
+            bh.input.body.filter[i].value
+          );
+        }
       }
-      if (bh.input.body.sort) {
+      if (bh.input.body.search && bh.input.body.search.fieldName) {
+        query = query.where(
+          bh.input.body.search.fieldName,
+          '>=',
+          bh.input.body.search.searchText
+        );
+        query = query.where(
+          bh.input.body.search.fieldName,
+          '<=',
+          bh.input.body.search.searchText + '\uf8ff'
+        );
+      } else if (bh.input.body.sort) {
         for (let i = 0; i < bh.input.body.sort.length; i++) {
           query = query.orderBy(bh.input.body.sort[i].field);
         }
@@ -789,128 +805,6 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_hFFE5x4kHRMAUsBq');
-    }
-  }
-
-  async sd_RPHyvWHJNvx3f5S3(bh) {
-    try {
-      bh.local.userDocs = await this.firestoreDb
-        .collection('AdminUsers')
-        .where('email', '==', bh.input.body.email)
-        .get();
-      console.log(bh.local.userDocs.empty);
-      bh = await this.sd_OA0IRO0Hmczcz0ts(bh);
-      //appendnew_next_sd_RPHyvWHJNvx3f5S3
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_RPHyvWHJNvx3f5S3');
-    }
-  }
-
-  async sd_OA0IRO0Hmczcz0ts(bh) {
-    try {
-      if (
-        this.sdService.operators['true'](
-          bh.local.userDocs.empty,
-          undefined,
-          undefined,
-          undefined
-        )
-      ) {
-        bh = await this.sd_zbgHmSswhLzrXdSz(bh);
-      } else if (
-        this.sdService.operators['false'](
-          bh.local.userDocs.empty,
-          undefined,
-          undefined,
-          undefined
-        )
-      ) {
-        bh = await this.sd_uEwQIpdBBbfgFvOT(bh);
-      }
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_OA0IRO0Hmczcz0ts');
-    }
-  }
-
-  async sd_zbgHmSswhLzrXdSz(bh) {
-    try {
-      bh.web.res
-        .status(200)
-        .send({ error: 'Invalid email or password', success: false });
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_zbgHmSswhLzrXdSz');
-    }
-  }
-
-  async sd_uEwQIpdBBbfgFvOT(bh) {
-    try {
-      bh.local.userDocs.forEach((userDoc) => {
-        bh.local.userDocData = userDoc.data();
-        bh.local.userDocData.id = userDoc.id;
-      });
-
-      bh = await this.sd_b9DXQtrwuVCKubuQ(bh);
-      //appendnew_next_sd_uEwQIpdBBbfgFvOT
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_uEwQIpdBBbfgFvOT');
-    }
-  }
-
-  async sd_b9DXQtrwuVCKubuQ(bh) {
-    try {
-      if (
-        this.sdService.operators['eq'](
-          bh.input.body.password,
-          bh.local.userDocData.password,
-          undefined,
-          undefined
-        )
-      ) {
-        bh = await this.sd_2D1QeJgwLmTWB1Gg(bh);
-      } else if (
-        this.sdService.operators['neq'](
-          bh.input.body.password,
-          bh.local.userDocData.password,
-          undefined,
-          undefined
-        )
-      ) {
-        bh = await this.sd_OzZT4VOg1ziIR1A7(bh);
-      }
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_b9DXQtrwuVCKubuQ');
-    }
-  }
-
-  async sd_2D1QeJgwLmTWB1Gg(bh) {
-    try {
-      bh.web.res
-        .status(200)
-        .send({ success: true, userDocData: bh.local.userDocData });
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_2D1QeJgwLmTWB1Gg');
-    }
-  }
-
-  async sd_OzZT4VOg1ziIR1A7(bh) {
-    try {
-      bh.web.res
-        .status(200)
-        .send({ error: 'Invalid email or password', success: false });
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_OzZT4VOg1ziIR1A7');
     }
   }
 
@@ -1224,7 +1118,6 @@ export class vendors {
       bh.local.isBodyCorrect = [
         'email',
         'password',
-        'projects',
         'name',
         'mobile',
         'role',
@@ -1273,12 +1166,13 @@ export class vendors {
         email: data.email,
         phoneNumber: data.mobile,
         password: data.password,
+        name: data.name,
       });
       bh.local.writeResult = this.firestoreDb
         .collection('AdminUsers')
         .doc(userRecord.uid)
         .set(data);
-      bh = await this.sd_FJZOzDw0Mi1wxqJp(bh);
+      bh = await this.sd_CaLITEAdz7WxZrk3(bh);
       //appendnew_next_sd_881w0U6YPdipP6XH
       return bh;
     } catch (e) {
@@ -1286,22 +1180,9 @@ export class vendors {
     }
   }
 
-  async sd_FJZOzDw0Mi1wxqJp(bh) {
-    try {
-      bh.local.addResult = await this.firestoreDb
-        .collection('AdminUsers')
-        .add(bh.input.body);
-      bh = await this.sd_CaLITEAdz7WxZrk3(bh);
-      //appendnew_next_sd_FJZOzDw0Mi1wxqJp
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_FJZOzDw0Mi1wxqJp');
-    }
-  }
-
   async sd_CaLITEAdz7WxZrk3(bh) {
     try {
-      bh.web.res.status(200).send(bh.local.addResult);
+      bh.web.res.status(200).send(bh.local.writeResult);
 
       return bh;
     } catch (e) {
@@ -1469,6 +1350,31 @@ export class vendors {
     }
   }
 
+  async sd_GRAMNdDqLIbyCtQi(bh) {
+    try {
+      this.firebaseAuth.updateUser(bh.input.body.uid, bh.input.body.data);
+      bh.local.response = {
+        success: true,
+        message: 'User ' + bh.input.body.uid + ' status successfully changed.',
+      };
+      bh = await this.sd_opzUhULwvTew3rMf(bh);
+      //appendnew_next_sd_GRAMNdDqLIbyCtQi
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_GRAMNdDqLIbyCtQi');
+    }
+  }
+
+  async sd_opzUhULwvTew3rMf(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.response);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_opzUhULwvTew3rMf');
+    }
+  }
+
   //appendnew_node
 
   async errorHandler(bh, e, src) {
@@ -1502,18 +1408,20 @@ export class vendors {
   //appendnew_flow_vendors_Catch
 
   firebaseInitializationFunction() {
-
-    const serviceAccount:any = {
-      "type": "service_account",
-      "project_id": "vj-labour-onboarding",
-      "private_key_id": "873c238c22506924e6c0b3bdbd02f4675637c19f",
-      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDeeR5ZaFKlFIq5\noSAurmWudNqyldv8nPlEfOdCNqQfpQkhDvL6P39aFooNgXO1XV1dPaGBWg+YJXUq\n17/aADjib9x+zphGjWC3+7pv+QOZQWpa3orl/0Ow9mmJL2opyncAIq+6hgm5UVPJ\n/LKrPk5QOSATpBbWloUTzvDyvBwlusUXFQ2VXlsrr1D524IYb2gkRJq2O8fB2TQd\n28TqlivDhG7fbSWE8J0ylU1PmFhugB4ybPgskXS1awzB0i1917UTCpZT/Ri60fx4\nZMIwKZ7SrhtPof0335M0hawhZdo8askp6Yrxw/c5Zy2dfY8J5K8hYqXsj5wHThim\na6GPRuZBAgMBAAECggEAPzG4ZT00/J9xKHmUYq43Q+79kGzxKDiOtd2k8zICPNrs\nVO+iJWOUEUsFvABhlcsHkkzHa67hbx50wc63OH2HqwqLX5nft2rBZoGi29uoIghq\n5ZUBb4Oq/sGACO/nACf61ZcEw77/VBy96EpXlj0EkdUoP2wE8L+g3ZeS6eB1PmHf\nZkDbYOwIyjkiO9ok75G9C563TXIytlkWzMndww1PDhVgKHIAOAGmGGVG4abxkQQF\nfuPOqQXwUO8SYVwfrpX/AGyAGML1CpBaStKXTCLVvBVe+FVAYHYPLSC3Hm7hqucw\nzv2cX4+pLMl78/cB9dfv1TL76e58EjB+piZkPOmAYQKBgQD/XZP5j8w5EOPeSzFc\n2b4aZwiKhSTlFO7aP8aldhyKphERQaCznS25Rsax442cVzkmXdHxwIDmQcNA/jSp\n9VryN2He2WZojQGtxxj/cBFcXxajIifE39WYBZle6M2ZkNqSnZ+4B4FrsBdjjdsh\nY9PSZ9n+geU5Y/rFu4UJXx4kCwKBgQDfBp6mNFWaQ0DFO8A/S1zAFDP9+34TSyv1\nPCJmPFOJMhJ38H+llXIqvcZ54gFzCv0rfxuNyBUMbppwVmSfcG0sKYABOaOXBSUP\ngGIQb920/WUmzLfRSxQ3pYS4mvlIWLY5+8DPw3rcjgFzL5uGqjhjh6jDLqzxbOqU\ngP/BLXCiYwKBgHhDCb0uC2+UlLvLjaO8p9qnS05xBb8c7J+8CUFDLo3dR4xo69Wq\n4C2xN0HveHF4YmG/LXA8yHen4Nxq20JvWjVX/6+DkscKIRBGA2/Ix2RJI9AP9cqx\n31WIzYH1AV6g6U7DDMUOQ9UDSQCJfflrmgYtAmzpn5o3i5IzjaOsN/WhAoGASqEC\ncYdNpcMfZ2BpIkTrknKwOyruszISUYt/z0ocgeo5d90IObZab6b1RU+1QHPK58Uu\nyTDMqk5Qa4rdPOT4AzEX3lEVRrG4Bwnkxq9INwob0PHsCKLg7wX59XQWOnlE8P4n\nNN6qvCbgoVSq7FMFb3izpix2Pos9q9fGvTOhXxUCgYA9/9RwyXZMFmOKhoXr2QId\n4x+xDVJZfA9DGQSKiBBWFYbkicXAIJ9qji4ZAUAOdDjT277RVUsoiMsS67OdDytY\nMdYatC5wcIONA3nO/0ypNByJ3E4PbAx5qojdq5tFwCTzufkn6Six6xKktLIEzMKM\nTLvEc+nIk7udEKOwbSZeEQ==\n-----END PRIVATE KEY-----\n",
-      "client_email": "firebase-adminsdk-mgu4s@vj-labour-onboarding.iam.gserviceaccount.com",
-      "client_id": "113425014157321564425",
-      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-      "token_uri": "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgu4s%40vj-labour-onboarding.iam.gserviceaccount.com"
+    const serviceAccount = {
+      type: 'service_account',
+      project_id: 'vj-labour-onboarding',
+      private_key_id: '873c238c22506924e6c0b3bdbd02f4675637c19f',
+      private_key:
+        '-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDeeR5ZaFKlFIq5\noSAurmWudNqyldv8nPlEfOdCNqQfpQkhDvL6P39aFooNgXO1XV1dPaGBWg+YJXUq\n17/aADjib9x+zphGjWC3+7pv+QOZQWpa3orl/0Ow9mmJL2opyncAIq+6hgm5UVPJ\n/LKrPk5QOSATpBbWloUTzvDyvBwlusUXFQ2VXlsrr1D524IYb2gkRJq2O8fB2TQd\n28TqlivDhG7fbSWE8J0ylU1PmFhugB4ybPgskXS1awzB0i1917UTCpZT/Ri60fx4\nZMIwKZ7SrhtPof0335M0hawhZdo8askp6Yrxw/c5Zy2dfY8J5K8hYqXsj5wHThim\na6GPRuZBAgMBAAECggEAPzG4ZT00/J9xKHmUYq43Q+79kGzxKDiOtd2k8zICPNrs\nVO+iJWOUEUsFvABhlcsHkkzHa67hbx50wc63OH2HqwqLX5nft2rBZoGi29uoIghq\n5ZUBb4Oq/sGACO/nACf61ZcEw77/VBy96EpXlj0EkdUoP2wE8L+g3ZeS6eB1PmHf\nZkDbYOwIyjkiO9ok75G9C563TXIytlkWzMndww1PDhVgKHIAOAGmGGVG4abxkQQF\nfuPOqQXwUO8SYVwfrpX/AGyAGML1CpBaStKXTCLVvBVe+FVAYHYPLSC3Hm7hqucw\nzv2cX4+pLMl78/cB9dfv1TL76e58EjB+piZkPOmAYQKBgQD/XZP5j8w5EOPeSzFc\n2b4aZwiKhSTlFO7aP8aldhyKphERQaCznS25Rsax442cVzkmXdHxwIDmQcNA/jSp\n9VryN2He2WZojQGtxxj/cBFcXxajIifE39WYBZle6M2ZkNqSnZ+4B4FrsBdjjdsh\nY9PSZ9n+geU5Y/rFu4UJXx4kCwKBgQDfBp6mNFWaQ0DFO8A/S1zAFDP9+34TSyv1\nPCJmPFOJMhJ38H+llXIqvcZ54gFzCv0rfxuNyBUMbppwVmSfcG0sKYABOaOXBSUP\ngGIQb920/WUmzLfRSxQ3pYS4mvlIWLY5+8DPw3rcjgFzL5uGqjhjh6jDLqzxbOqU\ngP/BLXCiYwKBgHhDCb0uC2+UlLvLjaO8p9qnS05xBb8c7J+8CUFDLo3dR4xo69Wq\n4C2xN0HveHF4YmG/LXA8yHen4Nxq20JvWjVX/6+DkscKIRBGA2/Ix2RJI9AP9cqx\n31WIzYH1AV6g6U7DDMUOQ9UDSQCJfflrmgYtAmzpn5o3i5IzjaOsN/WhAoGASqEC\ncYdNpcMfZ2BpIkTrknKwOyruszISUYt/z0ocgeo5d90IObZab6b1RU+1QHPK58Uu\nyTDMqk5Qa4rdPOT4AzEX3lEVRrG4Bwnkxq9INwob0PHsCKLg7wX59XQWOnlE8P4n\nNN6qvCbgoVSq7FMFb3izpix2Pos9q9fGvTOhXxUCgYA9/9RwyXZMFmOKhoXr2QId\n4x+xDVJZfA9DGQSKiBBWFYbkicXAIJ9qji4ZAUAOdDjT277RVUsoiMsS67OdDytY\nMdYatC5wcIONA3nO/0ypNByJ3E4PbAx5qojdq5tFwCTzufkn6Six6xKktLIEzMKM\nTLvEc+nIk7udEKOwbSZeEQ==\n-----END PRIVATE KEY-----\n',
+      client_email:
+        'firebase-adminsdk-mgu4s@vj-labour-onboarding.iam.gserviceaccount.com',
+      client_id: '113425014157321564425',
+      auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+      token_uri: 'https://oauth2.googleapis.com/token',
+      auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
+      client_x509_cert_url:
+        'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgu4s%40vj-labour-onboarding.iam.gserviceaccount.com',
     };
     let app = initializeApp({
       credential: cert(serviceAccount),
@@ -1531,7 +1439,5 @@ export class vendors {
         measurementId: 'G-GQYWHQNY42',
       })
     );
-       
-
   }
 }

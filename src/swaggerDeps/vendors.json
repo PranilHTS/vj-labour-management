@@ -44,19 +44,6 @@
             ]
         }
     },
-    "/login": {
-        "post": {
-            "summary": "",
-            "description": "",
-            "consumes": [],
-            "produces": [],
-            "parameters": [],
-            "responses": {},
-            "tags": [
-                "vendors"
-            ]
-        }
-    },
     "/addRole": {
         "post": {
             "summary": "",
@@ -147,7 +134,22 @@
             ]
         }
     },
-    "/signInAdmin": {
+    "/login": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
+    },
+    "/blockOrUnblockUser": {
         "post": {
             "summary": "",
             "description": "",
