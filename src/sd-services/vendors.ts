@@ -1364,10 +1364,14 @@ export class vendors {
 
   async sd_GRAMNdDqLIbyCtQi(bh) {
     try {
-      this.firebaseAuth.updateUser(bh.input.body.uid, bh.input.body.data);
+      let updateStatus = await this.firebaseAuth.updateUser(
+        bh.input.body.uid,
+        bh.input.body.data
+      );
       bh.local.response = {
         success: true,
         message: 'User ' + bh.input.body.uid + ' status successfully changed.',
+        updateStatus,
       };
       bh = await this.sd_opzUhULwvTew3rMf(bh);
       //appendnew_next_sd_GRAMNdDqLIbyCtQi
