@@ -15,7 +15,7 @@ import * as settings from '../config/config'; //_splitter_
 import log from '../utils/Logger'; //_splitter_
 import { initializeApp, cert } from 'firebase-admin/app'; //_splitter_
 import { readFile } from 'fs'; //_splitter_
-import { getFirestore,Timestamp } from 'firebase-admin/firestore'; //_splitter_
+import { getFirestore } from 'firebase-admin/firestore'; //_splitter_
 import { getAuth } from 'firebase-admin/auth'; //_splitter_
 import { initializeApp as clientInitializeApp } from 'firebase/app'; //_splitter_
 import {
@@ -439,6 +439,37 @@ export class vendors {
           //appendnew_next_sd_x7D87XwOyZ6vbMcI
         } catch (e) {
           return await this.errorHandler(bh, e, 'sd_x7D87XwOyZ6vbMcI');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/getByDocId`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_Sfdiup4uMWgFH1V8(bh);
+          //appendnew_next_sd_z4NUWkTXYfwICObQ
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_z4NUWkTXYfwICObQ');
         }
       },
       this.sdService.getMiddlesWaresBySequenceId(
@@ -1388,6 +1419,32 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_opzUhULwvTew3rMf');
+    }
+  }
+
+  async sd_Sfdiup4uMWgFH1V8(bh) {
+    try {
+      bh.input.response = await this.firestoreDb
+        .collection(bh.input.body.collectionName)
+        .doc(bh.input.body.id)
+        .get();
+      bh.local.dataToSend = bh.input.response.data();
+      bh.local.dataToSend.id = bh.input.response.id;
+      bh = await this.sd_lNumd3AHqt6QNEOF(bh);
+      //appendnew_next_sd_Sfdiup4uMWgFH1V8
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_Sfdiup4uMWgFH1V8');
+    }
+  }
+
+  async sd_lNumd3AHqt6QNEOF(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.dataToSend);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_lNumd3AHqt6QNEOF');
     }
   }
 
