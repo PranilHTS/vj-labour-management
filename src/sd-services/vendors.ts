@@ -1563,9 +1563,13 @@ export class vendors {
 
   async sd_GwrrBu3nbQbjFz64(bh) {
     try {
-      bh.local.count = await getCountFromServer(
-        collection(this.clientFirestoreDB, bh.input.body.refString)
-      );
+      bh.local.count = [];
+      for (let i = 0; i < bh.input.body.length; i++) {
+        let count = await getCountFromServer(
+          collection(this.clientFirestoreDB, bh.input.body[i].refString)
+        );
+        bh.local.count.push(count);
+      }
 
       bh = await this.sd_h5rGpTaHayEFozfX(bh);
       //appendnew_next_sd_GwrrBu3nbQbjFz64
