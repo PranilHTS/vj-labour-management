@@ -15,19 +15,21 @@ import * as settings from '../config/config'; //_splitter_
 import log from '../utils/Logger'; //_splitter_
 import { initializeApp, cert } from 'firebase-admin/app'; //_splitter_
 import { readFile } from 'fs'; //_splitter_
-import { getFirestore } from 'firebase-admin/firestore'; //_splitter_
+import { getFirestore, Timestamp } from 'firebase-admin/firestore'; //_splitter_
 import { getAuth } from 'firebase-admin/auth'; //_splitter_
 import { initializeApp as clientInitializeApp } from 'firebase/app'; //_splitter_
 import {
   getAuth as clientGetAuth,
   signInWithEmailAndPassword,
 } from 'firebase/auth'; //_splitter_
+import { getStorage, getDownloadURL, ref } from 'firebase-admin/storage'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
 export class vendors {
   public firestoreDb: any;
   public firebaseAuth: any;
   public firebaseClientAuth: any;
+  public firebaseStorage: any;
   private sdService = new SDBaseService();
   private app;
   private serviceBasePath: string;
@@ -478,6 +480,37 @@ export class vendors {
         this.generatedMiddlewares
       )
     );
+
+    this.app['post'](
+      `${this.serviceBasePath}/getStorageFile`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_oTQfJCWJSNBQozFT(bh);
+          //appendnew_next_sd_jBWp4UsWMU6NKPwG
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_jBWp4UsWMU6NKPwG');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
     //appendnew_flow_vendors_HttpIn
   }
   //   service flows_vendors
@@ -516,7 +549,7 @@ export class vendors {
         appId: '1:1006675202027:web:7494a83879b5d0b074d3ae',
         measurementId: 'G-GQYWHQNY42',
       };
-      bh = await this.sd_PtRb5KsxoK66rOXT(bh);
+      bh = await this.sd_lUH70kXoMOo8oWaA(bh);
       //appendnew_next_sd_SZnwPyYJ0SNiNzDi
       return bh;
     } catch (e) {
@@ -524,12 +557,12 @@ export class vendors {
     }
   }
 
-  async sd_PtRb5KsxoK66rOXT(bh) {
+  async sd_lUH70kXoMOo8oWaA(bh) {
     try {
-      //appendnew_next_sd_PtRb5KsxoK66rOXT
+      //appendnew_next_sd_lUH70kXoMOo8oWaA
       return bh;
     } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_PtRb5KsxoK66rOXT');
+      return await this.errorHandler(bh, e, 'sd_lUH70kXoMOo8oWaA');
     }
   }
 
@@ -1448,6 +1481,35 @@ export class vendors {
     }
   }
 
+  async sd_oTQfJCWJSNBQozFT(bh) {
+    try {
+      await this.firebaseStorage
+        .bucket('vj-labour-onboarding.appspot.com')
+        .file(bh.input.body.fileName)
+        .makePublic();
+      let url = await this.firebaseStorage
+        .bucket()
+        .file(bh.input.body.fileName)
+        .publicUrl();
+      bh.input.response = { url };
+      bh = await this.sd_gPYAJEOtr2TuzSBR(bh);
+      //appendnew_next_sd_oTQfJCWJSNBQozFT
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_oTQfJCWJSNBQozFT');
+    }
+  }
+
+  async sd_gPYAJEOtr2TuzSBR(bh) {
+    try {
+      bh.web.res.status(200).send(bh.input.response);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_gPYAJEOtr2TuzSBR');
+    }
+  }
+
   //appendnew_node
 
   async errorHandler(bh, e, src) {
@@ -1484,9 +1546,9 @@ export class vendors {
     const serviceAccount = {
       type: 'service_account',
       project_id: 'vj-labour-onboarding',
-      private_key_id: '873c238c22506924e6c0b3bdbd02f4675637c19f',
+      private_key_id: 'f4ff38a73d5a350ed504d4a2bdb81c0999ee78b7',
       private_key:
-        '-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDeeR5ZaFKlFIq5\noSAurmWudNqyldv8nPlEfOdCNqQfpQkhDvL6P39aFooNgXO1XV1dPaGBWg+YJXUq\n17/aADjib9x+zphGjWC3+7pv+QOZQWpa3orl/0Ow9mmJL2opyncAIq+6hgm5UVPJ\n/LKrPk5QOSATpBbWloUTzvDyvBwlusUXFQ2VXlsrr1D524IYb2gkRJq2O8fB2TQd\n28TqlivDhG7fbSWE8J0ylU1PmFhugB4ybPgskXS1awzB0i1917UTCpZT/Ri60fx4\nZMIwKZ7SrhtPof0335M0hawhZdo8askp6Yrxw/c5Zy2dfY8J5K8hYqXsj5wHThim\na6GPRuZBAgMBAAECggEAPzG4ZT00/J9xKHmUYq43Q+79kGzxKDiOtd2k8zICPNrs\nVO+iJWOUEUsFvABhlcsHkkzHa67hbx50wc63OH2HqwqLX5nft2rBZoGi29uoIghq\n5ZUBb4Oq/sGACO/nACf61ZcEw77/VBy96EpXlj0EkdUoP2wE8L+g3ZeS6eB1PmHf\nZkDbYOwIyjkiO9ok75G9C563TXIytlkWzMndww1PDhVgKHIAOAGmGGVG4abxkQQF\nfuPOqQXwUO8SYVwfrpX/AGyAGML1CpBaStKXTCLVvBVe+FVAYHYPLSC3Hm7hqucw\nzv2cX4+pLMl78/cB9dfv1TL76e58EjB+piZkPOmAYQKBgQD/XZP5j8w5EOPeSzFc\n2b4aZwiKhSTlFO7aP8aldhyKphERQaCznS25Rsax442cVzkmXdHxwIDmQcNA/jSp\n9VryN2He2WZojQGtxxj/cBFcXxajIifE39WYBZle6M2ZkNqSnZ+4B4FrsBdjjdsh\nY9PSZ9n+geU5Y/rFu4UJXx4kCwKBgQDfBp6mNFWaQ0DFO8A/S1zAFDP9+34TSyv1\nPCJmPFOJMhJ38H+llXIqvcZ54gFzCv0rfxuNyBUMbppwVmSfcG0sKYABOaOXBSUP\ngGIQb920/WUmzLfRSxQ3pYS4mvlIWLY5+8DPw3rcjgFzL5uGqjhjh6jDLqzxbOqU\ngP/BLXCiYwKBgHhDCb0uC2+UlLvLjaO8p9qnS05xBb8c7J+8CUFDLo3dR4xo69Wq\n4C2xN0HveHF4YmG/LXA8yHen4Nxq20JvWjVX/6+DkscKIRBGA2/Ix2RJI9AP9cqx\n31WIzYH1AV6g6U7DDMUOQ9UDSQCJfflrmgYtAmzpn5o3i5IzjaOsN/WhAoGASqEC\ncYdNpcMfZ2BpIkTrknKwOyruszISUYt/z0ocgeo5d90IObZab6b1RU+1QHPK58Uu\nyTDMqk5Qa4rdPOT4AzEX3lEVRrG4Bwnkxq9INwob0PHsCKLg7wX59XQWOnlE8P4n\nNN6qvCbgoVSq7FMFb3izpix2Pos9q9fGvTOhXxUCgYA9/9RwyXZMFmOKhoXr2QId\n4x+xDVJZfA9DGQSKiBBWFYbkicXAIJ9qji4ZAUAOdDjT277RVUsoiMsS67OdDytY\nMdYatC5wcIONA3nO/0ypNByJ3E4PbAx5qojdq5tFwCTzufkn6Six6xKktLIEzMKM\nTLvEc+nIk7udEKOwbSZeEQ==\n-----END PRIVATE KEY-----\n',
+        '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDUMDtV3mYA9w/h\nfkeXFFxbqAFRPMkNH8cG7uXTO8kCE7orxj3H3J2DQXjDxpY8Knn/RRooi7y0MeOS\nKaKsgd0z9m4Ty+MaO2fthWcdViaoDPcJnfiOvSQaSxBsq6oqlj3CHhLIvm86Gkkt\nc5NdRgo7XCg4iyirt3dmAvlu6mYnFDWOgINAIDfJy3uCd+mRSZ88QAoW3omGQpOf\nP6HEdxkc9El3VHEtOclKsWjnHGHREY0mNIkEDGJI4sx5CVbn9jWEB3FiBWPAsblY\nmBMAtTNBOgXMgb5FadzHtbqtVTyKxhmPTD0kffDCNA50H2Qk+Go9WxtU6HUygbcg\nNs/sXcAVAgMBAAECggEABRw9zecWJ9MGh5TDivAGXgerH9aYtP+EsnE0MJEvMjic\nLXhU4G12BWLcNQfIrWxHi799xHtziaFPz0DTwq//iU3/E07TscXPa/alO3+4hE90\n21yrKA9e3tagb6O7sYP0pyBr/CmPgyO5PDn/q5Xz3ZgfTHo/XJZyDECG2xAAcpib\nKPQpLFWy6jrTQf6pQIVxlxZ3QCIltF4T7INDRPtI2HFyJDLZGh0yGNfE6l5qkWfa\nPlFoY3c02X2a3m/thlsrnStA3DX2XwS3nPeIWGyl+c8evgci74XYHiTdeLfmEH2o\ndqJuLaWnquLkis0rarJxO4wT+p9RfCUfS0aTyYMIZQKBgQDutNN3O7jfMLxKKdBZ\ny5HfUL20GGVvhPvyGBiONlbZufBN859/6ya6CbRMcWpnklrIpI41VNDkBwqfz+qp\nArlhrXCtby4Aju0JFnbNpq80xecWLEunf673NTXLoGXRiTIDE6wDwu2CN0+H/5ns\nPXxyFNxl4KBkRKO1Pasv0Jql9wKBgQDjj5cErPdLPCQZRXqulYJO7635DHTvk76u\nFUOh5Ph2xoqLMtmZSCO384uhCOxmys3H4oJq/4hlQQjcXoHosyhSR6H6EfLNnq8d\nTU9bfdGakpn/pXIuMhWh4/wfTSPqcz6e2ca+Y+Y60/zIzbLIvAcEGYKw0wC42LvZ\n3xkO8gVXUwKBgF1nTEefittqioLKkchRK6ciRNivoyFb++njG9ip0ponc6xM4+B9\n9w1ctrwitOwKDJPuL+cWZRaU2sdl6AByHG/oGesDUhDN3Fpt+9bEnlIcDixS8Nd9\n0szQeVhQTwcKlBM4I1rlb2JAmlIw5d3WwVcyantCxf/2C8jjdJSlH55JAoGATNrU\nEFoycxBuyLI0iv4nsm00fqZ8X+WwQq8f1m+0krjfVb/oyeIZXik9ATg4T0czVMzl\naym+cSQT0AmDKopHlfJnfEPPky6CygywPqAxyFi29iZ0d7GmqLSNFC1Dcg1WGuRG\nQUsQGNI7z73ZIf6PCA1tnDbHSaa5Ww4EMo3+y80CgYEA37T51/YI6GURXOHmcV/Q\nbXa+Hz7FuflHLkZz6MucpDMdpc12LHDV8ZzKpDjSnlb3Gr9LD543YJliQc2fqVAU\nCEt4ftZz5/9nQCPrOP3gjg65qq6BivU/7o0m5A1KvGdDYoZ6CsKokSGDAQEEwO2F\nSxAwFwcfEF9c7jESgAfKB1Q=\n-----END PRIVATE KEY-----\n',
       client_email:
         'firebase-adminsdk-mgu4s@vj-labour-onboarding.iam.gserviceaccount.com',
       client_id: '113425014157321564425',
@@ -1498,6 +1560,7 @@ export class vendors {
     };
     let app = initializeApp({
       credential: cert(serviceAccount),
+      storageBucket:'vj-labour-onboarding.appspot.com'
     });
     this.firestoreDb = getFirestore(app);
     this.firebaseAuth = getAuth(app);
@@ -1512,5 +1575,7 @@ export class vendors {
         measurementId: 'G-GQYWHQNY42',
       })
     );
+    this.firebaseStorage = getStorage(app);
+    console.log(this.firebaseStorage.bucket().name);
   }
 }
