@@ -708,7 +708,7 @@ export class vendors {
         method: 'post',
         headers: { 'Content-Type': 'text/xml' },
         followRedirects: true,
-        cookies: {},
+        cookies: undefined,
         authType: undefined,
         body: bh.local.body,
         paytoqs: false,
@@ -1055,12 +1055,12 @@ export class vendors {
   async sd_HVVCrKKyMrtkPiyc(bh) {
     try {
       let requestOptions = {
-        url: 'http://125.99.67.214:8526/webapiservice.asmx?',
+        url: 'http://103.186.18.61:8526/webapiservice.asmx?',
         timeout: 30000,
         method: 'post',
         headers: { 'Content-Type': 'text/xml' },
         followRedirects: true,
-        cookies: {},
+        cookies: undefined,
         authType: undefined,
         body: bh.local.body,
         paytoqs: false,
@@ -1560,7 +1560,6 @@ export class vendors {
     };
     let app = initializeApp({
       credential: cert(serviceAccount),
-      storageBucket:'vj-labour-onboarding.appspot.com'
     });
     this.firestoreDb = getFirestore(app);
     this.firebaseAuth = getAuth(app);
@@ -1576,6 +1575,5 @@ export class vendors {
       })
     );
     this.firebaseStorage = getStorage(app);
-    console.log(this.firebaseStorage.bucket().name);
   }
 }
