@@ -25,7 +25,7 @@ import {
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
 import {
   getFirestore as clientgetFirestore,
-  getCountFromServer,collection
+  getCountFromServer,collection,where,query as firebaseQuery
 } from 'firebase/firestore'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
@@ -1565,10 +1565,54 @@ export class vendors {
     try {
       bh.local.count = [];
       for (let i = 0; i < bh.input.body.length; i++) {
-        let count = await getCountFromServer(
-          collection(this.clientFirestoreDB, bh.input.body[i].refString)
-        );
+        let queryConstraint;
+
+        if (bh.input.body[i].filter && bh.input.body[i].filter.length > 0) {
+          let operator = bh.input.body[i].filter[0].operator
+            ? bh.input.body[i].filter[0].operator
+            : '==';
+          queryConstraint = where(
+            bh.input.body[i].filter[0].field,
+            operator,
+            bh.input.body[i].filter[0].value
+          );
+          console.log(
+            bh.input.body[i].filter[0].field,
+            operator,
+            bh.input.body[i].filter[0].value
+          );
+          for (let j = 1; j < bh.input.body[i].filter.length; j++) {
+            let operator = bh.input.body[i].filter[j].operator
+              ? bh.input.body[i].filter[j].operator
+              : '==';
+            queryConstraint = queryConstraint.where(
+              bh.input.body[i].filter[j].field,
+              operator,
+              bh.input.body[i].filter[j].value
+            );
+            console.log(
+              bh.input.body[i].filter[j].field,
+              operator,
+              bh.input.body[i].filter[j].value
+            );
+          }
+        }
+        let query;
+        if (queryConstraint) {
+          query = firebaseQuery(
+            collection(this.clientFirestoreDB, bh.input.body[i].refString),
+            queryConstraint
+          );
+        } else {
+          query = collection(
+            this.clientFirestoreDB,
+            bh.input.body[i].refString
+          );
+        }
+
+        let count = await getCountFromServer(query);
         bh.local.count.push(count);
+        console.log(bh.local.count);
       }
 
       bh = await this.sd_h5rGpTaHayEFozfX(bh);
