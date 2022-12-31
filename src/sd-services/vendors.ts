@@ -25,7 +25,7 @@ import {
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
 import {
   getFirestore as clientgetFirestore,
-  getCountFromServer,collection,where,query as firebaseQuery
+  getCountFromServer,collection,where,query as firebaseQuery, QueryConstraint
 } from 'firebase/firestore'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
@@ -1565,17 +1565,17 @@ export class vendors {
     try {
       bh.local.count = [];
       for (let i = 0; i < bh.input.body.length; i++) {
-        let queryConstraint;
+        let queryConstraint:QueryConstraint[] = [];
 
         if (bh.input.body[i].filter && bh.input.body[i].filter.length > 0) {
           let operator = bh.input.body[i].filter[0].operator
             ? bh.input.body[i].filter[0].operator
             : '==';
-          queryConstraint = where(
+          queryConstraint.push(where(
             bh.input.body[i].filter[0].field,
             operator,
             bh.input.body[i].filter[0].value
-          );
+          ));
           console.log(
             bh.input.body[i].filter[0].field,
             operator,
@@ -1585,11 +1585,11 @@ export class vendors {
             let operator = bh.input.body[i].filter[j].operator
               ? bh.input.body[i].filter[j].operator
               : '==';
-            queryConstraint = queryConstraint.where(
+            queryConstraint.push(where(
               bh.input.body[i].filter[j].field,
               operator,
               bh.input.body[i].filter[j].value
-            );
+            ));
             console.log(
               bh.input.body[i].filter[j].field,
               operator,
@@ -1601,7 +1601,7 @@ export class vendors {
         if (queryConstraint) {
           query = firebaseQuery(
             collection(this.clientFirestoreDB, bh.input.body[i].refString),
-            queryConstraint
+            ...queryConstraint
           );
         } else {
           query = collection(
