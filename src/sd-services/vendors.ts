@@ -664,11 +664,9 @@ export class vendors {
       data.forEach((firebaseDoc) => {
         let firebaseData = firebaseDoc.data();
         if (firebaseData.startTime) {
-          console.log(
-            firebaseData.startTime.toDate(),
-            firebaseData.endTime.toDate(),
-            firebaseData.employeeId
-          );
+          firebaseData.startTime = firebaseData.startTime.toDate();
+          firebaseData.endTime = firebaseData.endTime.toDate();
+          console.log(firebaseData.startTime);
         }
         firebaseData.id = firebaseDoc.id;
         dataArray.push(firebaseData);
@@ -697,6 +695,13 @@ export class vendors {
       if (bh.input.body.length) {
         bh.input.response = [];
         for (let i = 0; i < bh.input.body.length; i++) {
+          if (bh.input.body[i].dateKeys) {
+            for (let j = 0; j < bh.input.body[i].dateKeys.length; j++) {
+              bh.input.body[i].data[bh.input.body[i].dateKeys[j]] = new Date(
+                bh.input.body[i].data[bh.input.body[i].dateKeys[j]]
+              );
+            }
+          }
           let response = await this.firestoreDb
             .collection(bh.input.body[i].collectionName)
             .doc(bh.input.body[i].id)
@@ -851,6 +856,7 @@ export class vendors {
       let employeeObj = {};
       let dateObjStartTime = '';
       let dateObjEndTime = '';
+      let allEmployeeDayTransactions = [];
       console.log(transactionsStringArray);
       for (let i = 0; i < transactionsStringArray.length - 1; i++) {
         let singleRowData = transactionsStringArray[i].split('\t');
@@ -865,22 +871,27 @@ export class vendors {
           processingDate = currentDate;
           processingEmployeeId = currentEmployeeId;
           resultObj[processingEmployeeId] = [];
+          allEmployeeDayTransactions = [];
         }
         if (currentEmployeeId !== processingEmployeeId) {
           resultObj[processingEmployeeId].push({
             startTime: dateObjStartTime,
             endTime: dateObjEndTime,
             date: processingDate,
+            allEmployeeDayTransactions,
           });
           processingEmployeeId = currentEmployeeId;
           processingDate = currentDate;
           dateObjStartTime = currentTime;
+          dateObjEndTime = currentTime;
+          allEmployeeDayTransactions = [];
           resultObj[processingEmployeeId] = [];
         }
         if (
           currentEmployeeId == processingEmployeeId &&
           processingDate == currentDate
         ) {
+          allEmployeeDayTransactions.push(currentTime);
           dateObjEndTime = currentTime;
         } else if (
           currentEmployeeId == processingEmployeeId &&
@@ -891,9 +902,12 @@ export class vendors {
             startTime: dateObjStartTime,
             endTime: dateObjEndTime,
             date: processingDate,
+            allEmployeeDayTransactions,
           });
           processingDate = currentDate;
           dateObjStartTime = currentTime;
+          dateObjEndTime = currentTime;
+          allEmployeeDayTransactions = [currentTime];
         }
       }
       bh.local.finalResultObj = resultObj;
