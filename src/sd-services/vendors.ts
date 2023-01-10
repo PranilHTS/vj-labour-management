@@ -1096,12 +1096,22 @@ export class vendors {
     try {
       let data = bh.input.body;
       console.log(bh.input.body);
+      let firebaseData;
+      let latestEmployeeSnapShots = await this.firestoreDb
+        .collection('users')
+        .sort('runningTime', 'desc')
+        .limit(1);
+      latestEmployeeSnapShots.forEach((firebaseDoc) => {
+        firebaseData = firebaseDoc.data();
+        firebaseData.id = firebaseDoc.id;
+      });
+      bh.local.employeeCode = 'VJ' + firebaseData.runningTime;
       bh.local.body = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <AddEmployee xmlns="http://tempuri.org/">
       <APIKey>string</APIKey>
-      <EmployeeCode>${data.employeeCode}</EmployeeCode>
+      <EmployeeCode>${bh.local.employeeCode}</EmployeeCode>
       <EmployeeName>${data.employeeName}</EmployeeName>
       <CardNumber></CardNumber>
       <SerialNumber>${data.serialNumber}</SerialNumber>
@@ -1196,11 +1206,25 @@ export class vendors {
         '_'
       );
       bh.local.parsedResult = parsedValue;
-      bh = await this.sd_yygTbYCYYXkmVuRb(bh);
+      bh = await this.sd_VrzY4hYqerY7T3xb(bh);
       //appendnew_next_sd_v5VQcm1sHdynIu0k
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_v5VQcm1sHdynIu0k');
+    }
+  }
+
+  async sd_VrzY4hYqerY7T3xb(bh) {
+    try {
+      let response = await this.firestoreDb
+        .collection('users')
+        .doc(bh.input.body.id)
+        .update({ employeeCode: bh.local.employeeCode });
+      bh = await this.sd_yygTbYCYYXkmVuRb(bh);
+      //appendnew_next_sd_VrzY4hYqerY7T3xb
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_VrzY4hYqerY7T3xb');
     }
   }
 

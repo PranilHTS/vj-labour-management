@@ -125,7 +125,7 @@ console.log('process.env.pm_id', process.env.pm_id);
         app.use(APIResponse);
         baseApp.use(app);
         // run app
-        baseApp.listen(port),'192.168.2.64',()=>{
+        baseApp.listen(port),'0.0.0.0',()=>{
 
         };
 
