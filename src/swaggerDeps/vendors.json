@@ -206,5 +206,20 @@
                 "vendors"
             ]
         }
+    },
+    "/uploadImage": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "vendors"
+            ]
+        }
     }
 }

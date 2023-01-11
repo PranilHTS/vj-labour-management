@@ -23,6 +23,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'; //_splitter_
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
+import * as stream from 'stream';
 import {
   getFirestore as clientgetFirestore,
   getCountFromServer,collection,where,query as firebaseQuery,QueryConstraint
@@ -539,6 +540,37 @@ export class vendors {
           //appendnew_next_sd_eQu7hV2QRjin7mde
         } catch (e) {
           return await this.errorHandler(bh, e, 'sd_eQu7hV2QRjin7mde');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/uploadImage`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_HQANtoC97vpeexnW(bh);
+          //appendnew_next_sd_ybudBEAHnZ6reLNY
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_ybudBEAHnZ6reLNY');
         }
       },
       this.sdService.getMiddlesWaresBySequenceId(
@@ -1678,6 +1710,58 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_h5rGpTaHayEFozfX');
+    }
+  }
+
+  async sd_HQANtoC97vpeexnW(bh) {
+    try {
+      var bufferStream = new stream.PassThrough();
+      bufferStream.end(Buffer.from(bh.input.body.base64Image, 'base64'));
+      let bucket = await this.firebaseStorage.bucket(
+        'vj-labour-onboarding.appspot.com'
+      );
+      var file = bucket.file(bh.input.body.fileName);
+
+      await new Promise((resolve, reject) => {
+        bufferStream
+          .pipe(
+            file.createWriteStream({
+              metadata: {
+                contentType: bh.input.body.fileType,
+                metadata: {
+                  custom: 'metadata',
+                },
+              },
+              public: true,
+              validation: 'md5',
+            })
+          )
+          .on('error', function (err) {
+            bh.local.message = { success: false, err };
+            reject(false);
+          })
+          .on('finish', function () {
+            bh.local.message = { success: true };
+            // The file upload is complete.
+            resolve(true);
+          });
+      });
+
+      bh = await this.sd_ZaJv7YACwwu4kapM(bh);
+      //appendnew_next_sd_HQANtoC97vpeexnW
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_HQANtoC97vpeexnW');
+    }
+  }
+
+  async sd_ZaJv7YACwwu4kapM(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.message);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_ZaJv7YACwwu4kapM');
     }
   }
 
