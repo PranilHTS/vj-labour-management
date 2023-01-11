@@ -23,12 +23,12 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'; //_splitter_
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
-import * as stream from 'stream';
 import {
   getFirestore as clientgetFirestore,
   getCountFromServer,collection,where,query as firebaseQuery,QueryConstraint
 } from 'firebase/firestore'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
+import * as stream from 'stream';
 //append_imports_end
 export class vendors {
   public firestoreDb: any;
@@ -1132,7 +1132,8 @@ export class vendors {
       let latestEmployeeSnapShots = await this.firestoreDb
         .collection('users')
         .orderBy('runningId', 'desc')
-        .limit(1);
+        .limit(1)
+        .get();
       latestEmployeeSnapShots.forEach((firebaseDoc) => {
         firebaseData = firebaseDoc.data();
         firebaseData.id = firebaseDoc.id;
