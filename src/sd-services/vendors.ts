@@ -25,7 +25,7 @@ import {
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
 import {
   getFirestore as clientgetFirestore,
-  getCountFromServer,collection,where,query as firebaseQuery,QueryConstraint
+  getCountFromServer,
 } from 'firebase/firestore'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
@@ -1099,13 +1099,14 @@ export class vendors {
       let firebaseData;
       let latestEmployeeSnapShots = await this.firestoreDb
         .collection('users')
-        .sort('runningTime', 'desc')
+        .orderBy('runningId', 'desc')
         .limit(1);
       latestEmployeeSnapShots.forEach((firebaseDoc) => {
         firebaseData = firebaseDoc.data();
         firebaseData.id = firebaseDoc.id;
       });
-      bh.local.employeeCode = 'VJ' + firebaseData.runningTime;
+      bh.local.employeeCode = 'VJ' + firebaseData.runningId + 1;
+      bh.local.runningId = firebaseData.runningId + 1;
       bh.local.body = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -1219,7 +1220,10 @@ export class vendors {
       let response = await this.firestoreDb
         .collection('users')
         .doc(bh.input.body.id)
-        .update({ employeeCode: bh.local.employeeCode });
+        .update({
+          employeeCode: bh.local.employeeCode,
+          runningId: bh.local.runningId,
+        });
       bh = await this.sd_yygTbYCYYXkmVuRb(bh);
       //appendnew_next_sd_VrzY4hYqerY7T3xb
       return bh;
