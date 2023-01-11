@@ -25,7 +25,7 @@ import {
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
 import {
   getFirestore as clientgetFirestore,
-  getCountFromServer,
+  getCountFromServer,collection,where,query as firebaseQuery,QueryConstraint
 } from 'firebase/firestore'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 //append_imports_end
