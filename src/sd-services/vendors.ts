@@ -25,7 +25,7 @@ import {
 import { getStorage } from 'firebase-admin/storage'; //_splitter_
 import {
   getFirestore as clientgetFirestore,
-  getCountFromServer,collection,where,query as firebaseQuery,QueryConstraint
+  getCountFromServer,collection,where,query as firebaseQuery,QueryConstraint,getDocs
 } from 'firebase/firestore'; //_splitter_
 import { XMLService } from '../utils/ndefault-xml/XML/XMLService'; //_splitter_
 import * as stream from 'stream';
@@ -571,6 +571,37 @@ export class vendors {
           //appendnew_next_sd_ybudBEAHnZ6reLNY
         } catch (e) {
           return await this.errorHandler(bh, e, 'sd_ybudBEAHnZ6reLNY');
+        }
+      },
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'post',
+        this.generatedMiddlewares
+      )
+    );
+
+    this.app['post'](
+      `${this.serviceBasePath}/getByRef`,
+      cookieParser(),
+      this.sdService.getMiddlesWaresBySequenceId(
+        null,
+        'pre',
+        this.generatedMiddlewares
+      ),
+
+      async (req, res, next) => {
+        let bh: any = {};
+        try {
+          bh = this.sdService.__constructDefault(
+            { local: {}, input: {} },
+            req,
+            res,
+            next
+          );
+          bh = await this.sd_SIysupcL36yQYES5(bh);
+          //appendnew_next_sd_GtNPG6wReHoGK2mp
+        } catch (e) {
+          return await this.errorHandler(bh, e, 'sd_GtNPG6wReHoGK2mp');
         }
       },
       this.sdService.getMiddlesWaresBySequenceId(
@@ -1286,6 +1317,12 @@ export class vendors {
         let month = dateSplitArray[1];
         let day = dateSplitArray[2];
         try {
+          bh.input.body.data[i].startTime = new Date(
+            bh.input.body.data[i].startTime
+          );
+          bh.input.body.data[i].endTime = new Date(
+            bh.input.body.data[i].endTime
+          );
           await this.firestoreDb
             .collection(
               'ApprovedUsers/' + year + '/' + month + '/' + day + '/attendance'
@@ -1741,8 +1778,9 @@ export class vendors {
             bh.local.message = { success: false, err };
             reject(false);
           })
-          .on('finish', function () {
-            bh.local.message = { success: true };
+          .on('finish', async () => {
+            let url = await bucket.file(bh.input.body.fileName).publicUrl();
+            bh.local.message = { success: true, url };
             // The file upload is complete.
             resolve(true);
           });
@@ -1763,6 +1801,93 @@ export class vendors {
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_ZaJv7YACwwu4kapM');
+    }
+  }
+
+  async sd_SIysupcL36yQYES5(bh) {
+    try {
+      bh.local.overAllData = [];
+      for (let i = 0; i < bh.input.body.length; i++) {
+        let queryConstraint: QueryConstraint[] = [];
+
+        if (bh.input.body[i].filter && bh.input.body[i].filter.length > 0) {
+          let operator = bh.input.body[i].filter[0].operator
+            ? bh.input.body[i].filter[0].operator
+            : '==';
+          queryConstraint.push(
+            where(
+              bh.input.body[i].filter[0].field,
+              operator,
+              bh.input.body[i].filter[0].value
+            )
+          );
+          console.log(
+            bh.input.body[i].filter[0].field,
+            operator,
+            bh.input.body[i].filter[0].value
+          );
+          for (let j = 1; j < bh.input.body[i].filter.length; j++) {
+            let operator = bh.input.body[i].filter[j].operator
+              ? bh.input.body[i].filter[j].operator
+              : '==';
+            queryConstraint.push(
+              where(
+                bh.input.body[i].filter[j].field,
+                operator,
+                bh.input.body[i].filter[j].value
+              )
+            );
+            console.log(
+              bh.input.body[i].filter[j].field,
+              operator,
+              bh.input.body[i].filter[j].value
+            );
+          }
+        }
+        let query;
+        if (queryConstraint) {
+          query = firebaseQuery(
+            collection(this.clientFirestoreDB, bh.input.body[i].refString),
+            ...queryConstraint
+          );
+        } else {
+          query = collection(
+            this.clientFirestoreDB,
+            bh.input.body[i].refString
+          );
+        }
+
+        let data;
+        data = await getDocs(query);
+
+        let dataArray = [];
+        data.forEach((firebaseDoc) => {
+          let firebaseData = firebaseDoc.data();
+          if (firebaseData.startTime) {
+            firebaseData.startTime = firebaseData.startTime.toDate();
+            firebaseData.endTime = firebaseData.endTime.toDate();
+            console.log(firebaseData.startTime);
+          }
+          firebaseData.id = firebaseDoc.id;
+          dataArray.push(firebaseData);
+        });
+        bh.local.overAllData.push(dataArray);
+      }
+      bh = await this.sd_mjEbXq6vSdZ3HvWs(bh);
+      //appendnew_next_sd_SIysupcL36yQYES5
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_SIysupcL36yQYES5');
+    }
+  }
+
+  async sd_mjEbXq6vSdZ3HvWs(bh) {
+    try {
+      bh.web.res.status(200).send(bh.local.overAllData);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_mjEbXq6vSdZ3HvWs');
     }
   }
 
