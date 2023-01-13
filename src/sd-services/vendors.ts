@@ -1779,6 +1779,7 @@ export class vendors {
             reject(false);
           })
           .on('finish', async () => {
+            await bucket.file(bh.input.body.fileName).makePublic();
             let url = await bucket.file(bh.input.body.fileName).publicUrl();
             bh.local.message = { success: true, url };
             // The file upload is complete.
